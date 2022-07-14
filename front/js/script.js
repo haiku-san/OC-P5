@@ -81,21 +81,21 @@ async function retrieveItems() {
     // });
 
     // On crée la liste de produits en utilisant forEach
-    // itemsList.forEach(function(product) {
-    //     let newCard = document.createElement("a");
-    //     newCard.setAttribute("href", `./product.html?id=${product._id}`);
-    //     newCard.innerHTML = `<article><img src=${product.imageUrl} alt=${product.altTxt}><h3 class='productName'>${product.name}</h3><p class='productDescription'>${product.description}</p></article>`;
-    //     itemsListHtml.appendChild(newCard);
-    // })
-
-
-    // On crée la liste de produits en utilisant for...of
-    for (const product of itemsList) {
+    itemsList.forEach(function(product) {
         let newCard = document.createElement("a");
         newCard.setAttribute("href", `./product.html?id=${product._id}`);
         newCard.innerHTML = `<article><img src=${product.imageUrl} alt=${product.altTxt}><h3 class='productName'>${product.name}</h3><p class='productDescription'>${product.description}</p></article>`;
         itemsListHtml.appendChild(newCard);
-    }
+    })
+
+
+    // // On crée la liste de produits en utilisant for...of
+    // for (const product of itemsList) {
+    //     let newCard = document.createElement("a");
+    //     newCard.setAttribute("href", `./product.html?id=${product._id}`);
+    //     newCard.innerHTML = `<article><img src=${product.imageUrl} alt=${product.altTxt}><h3 class='productName'>${product.name}</h3><p class='productDescription'>${product.description}</p></article>`;
+    //     itemsListHtml.appendChild(newCard);
+    // }
 
 }
 
