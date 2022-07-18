@@ -7,6 +7,7 @@ console.log(id);
 
 
 
+
 retrieveItems().catch(function(err) {
     console.log(err)
 });
@@ -36,5 +37,62 @@ async function retrieveItems() {
 //     productPage.innerHTML = `<div class="item__img"><img src=${product.imageUrl} alt=${product.altTxt}></div><div class="item__content"><div class="item__content__titlePrice"><h1 id="title">${product.name}</h1><p>Prix : <span id="price">${product.price}</span>€</p></div><div class="item__content__description"><p class="item__content__description__title">Description :</p><p id="description">${product.description}</p></div><div class="item__content__settings"><div class="item__content__settings__color"><label for="color-select">Choisir une couleur :</label><select name="color-select" id="colors"><option value="">--SVP, choisissez une couleur --</option><option value="vert">vert</option><option value="blanc">blanc</option></select></div><div class="item__content__settings__quantity"><label for="itemQuantity">Nombre d'article(s) (1-100) :</label><input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity"></div></div><div class="item__content__addButton"><button id="addToCart">Ajouter au panier</button></div></div>`;
 //     itemHtml.appendChild(productPage);
 // }
+      
+
+
+    async function addToCart() {
+        // localStorage.clear();
+        console.log("vous venez d'appuyer sur le bouton");
+        let colorsList = document.getElementById("colors");
+        let quantity = document.getElementById('quantity');
+        let productName = `${item.name} `+`${colorsList.value}`;
+        let productsList = [];
+        let newItemJSON = {
+            name: item.name,
+            id: item._id,
+            color: colorsList.value,
+            quantity: quantity.value
+        };
+
+        let newProductQuantity = newItemJSON.quantity;
+
+
+        if(localStorage.getItem(productName)) {
+            let currentProduct = JSON.parse(localStorage.getItem(productName));
+            console.log(currentProduct);
+            let currentProductQuantity = currentProduct[0].quantity;
+            console.log("current product quantity is " + currentProductQuantity);
+            console.log("the new product quantity is " + newProductQuantity);
+            let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
+            console.log("the final product quantity is " + finalProductQuantity);
+            newItemJSON = {
+                name: item.name,
+                id: item._id,
+                color: colorsList.value,
+                quantity: finalProductQuantity
+            };
+            productsList.push(newItemJSON);
+            newItemString = JSON.stringify(productsList);
+            localStorage.setItem(productName, newItemString);
+            console.log(localStorage);
+            } else {
+            productsList.push(newItemJSON);
+            newItemString = JSON.stringify(productsList);
+            localStorage.setItem(productName, newItemString);
+            console.log(localStorage);
+        }
+
+        
+        
+    }
+
+    window.onload = function() {
+        let addToCartButton = document.getElementById("addToCart");
+        
+        addToCartButton.addEventListener("click", addToCart, false);
+        }
+
 
 };
+
+
