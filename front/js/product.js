@@ -51,7 +51,10 @@ async function retrieveItems() {
             name: item.name,
             id: item._id,
             color: colorsList.value,
-            quantity: quantity.value
+            quantity: quantity.value,
+            imageUrl: item.imageUrl,
+            altTxt: item.altTxt,
+            price: item.price
         };
 
         let newProductQuantity = newItemJSON.quantity;
@@ -69,7 +72,10 @@ async function retrieveItems() {
                 name: item.name,
                 id: item._id,
                 color: colorsList.value,
-                quantity: finalProductQuantity
+                quantity: finalProductQuantity,
+                imageUrl: item.imageUrl,
+                altTxt: item.altTxt,
+                price: item.price
             };
             productsList.push(newItemJSON);
             newItemString = JSON.stringify(productsList);
