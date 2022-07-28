@@ -3,6 +3,9 @@ let totalItemsInCart = 0;
 
 console.log(localStorage);
 
+document.title = "Votre panier";
+
+
 showInCart().catch(function(err) {
     console.log(err)
 });
