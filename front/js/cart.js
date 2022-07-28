@@ -27,6 +27,7 @@ async function showInCart() {
 
 window.onload = function() {
     allQuantityInputs = document.querySelectorAll("input[name='itemQuantity']");
+    console.log(allQuantityInputs)
     allQuantityInputs.forEach(element => {
         element.addEventListener("change", modifyItemQuantity, false);
     });
@@ -34,6 +35,8 @@ window.onload = function() {
     allQuantityDeleteButtons.forEach(element => {
         element.addEventListener("click", deleteItemInCart, false);
     });
+    countTotalItemsInCart();
+    countTotalPriceInCart();
 }
 
 async function fetchItemToChange() {
@@ -43,18 +46,35 @@ async function fetchItemToChange() {
 
 async function countTotalItemsInCart() {
     let itemsQuantities = [];
-    allQuantityInputs.forEach(element => {
-        return itemsQuantities.push(parseInt(element.value));
+    allCartItems = document.querySelectorAll("article.cart__item");
+    console.log(allCartItems)
+    if(allCartItems.length === 0) {
+        totalItemsInCart = 0
+    } else {
+
+    allCartItems.forEach(element => {
+        itemQuantity = element.querySelector("input").value
+        console.log(itemQuantity)
+        return itemsQuantities.push(parseInt(itemQuantity));
     });   
     totalItemsInCart = itemsQuantities.reduce((partialSum, a) => partialSum + a, 0);
+    }
+    console.log(`Total items in cart is ${totalItemsInCart}`)
     showTotalOnPage();
-    return totalItemsInCart;
+    
+
+    // return totalItemsInCart;
+    
 }
 
 async function countTotalPriceInCart() {
     let itemsPrices = [];
-    allQuantityInputs.forEach(element => {
-        let input = element;
+    allCartItems = document.querySelectorAll("article.cart__item");
+    if(allCartItems.length === 0) {
+        totalPriceInCart = 0
+    } else {
+    allCartItems.forEach(element => {
+        let input = element.querySelector("input");
         let itemId = input.closest("article").getAttribute("data-id");
         itemObject = {};
         for (item in localStorage) {
@@ -69,30 +89,46 @@ async function countTotalPriceInCart() {
         }
     });   
     totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
+    }
+    console.log(`Total price in cart is ${totalPriceInCart}`)
+
     showTotalOnPage();
-    return totalPriceInCart;
+    // return totalPriceInCart;
 }
 
-async function deleteItemInCart() {
-    console.log(allQuantityInputs);
-    allQuantityInputs.forEach(element => {
-        let input = element;
-        let itemId = input.closest("article").getAttribute("data-id");
-        itemObject = {};
-        for (item in localStorage) {
-            if (localStorage.getItem(item)) {
-                let itemObjectJSON = localStorage.getItem(item);
-                itemObject = JSON.parse(itemObjectJSON);
-                localStorage.removeItem(item)
-            }
-            if (itemObject[0].id === itemId) {
-                localStorage.removeItem(item)
-            }
-        };
-        
-    });   
+async function deleteItemInCart(e) {
+    let deleteButton = e.target;
+    console.log(deleteButton);
+    // let itemName = deleteButton.closest("article h2");
+    let itemArticle = deleteButton.closest("article");
+    let itemColor = itemArticle.getAttribute("data-color");
+    let itemId = itemArticle.getAttribute("data-id");
+    // console.log(itemName);
+    itemObject = {};
+    for (item in localStorage) {
+        if (localStorage.getItem(item)) {
+            let itemObjectJSON = localStorage.getItem(item);
+            itemObject = JSON.parse(itemObjectJSON);
+        }
+        if (itemObject[0].id === itemId && itemObject[0].color === itemColor) {
+            console.log(itemId);
+            console.log(itemObject);
+            console.log(itemObject[0].id);
+            localStorage.removeItem(item)
+            itemArticle.remove()
+            
+        }
+        console.log("fin de la boucle for de la fonction deleteItemInCart")
+    };   
+    console.log('On lance les fonctions des totaux')
+    countTotalItemsInCart();
+    countTotalPriceInCart();
+    showTotalOnPage()
+    console.log(totalItemsInCart)
+    console.log(totalPriceInCart)
     console.log(localStorage);
 
+    
     // showTotalOnPage();
 }
 
@@ -123,6 +159,9 @@ async function showTotalOnPage() {
     totalQuantityHtml.innerHTML = totalItemsInCart;
     totalPriceHtml.innerHTML = totalPriceInCart;
 }
+
+
+// form.addEventListener("submit", function(e) {e.preventDefault()})
 
 
 

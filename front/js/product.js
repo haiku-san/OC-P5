@@ -5,6 +5,9 @@ let url = new URL(window.location.href)
 let id = url.searchParams.get("id");
 console.log(id);
 
+// let cart = {};
+// localStorage.setItem("cart", cart);
+
 
 
 
@@ -87,6 +90,51 @@ async function retrieveItems() {
             localStorage.setItem(productName, newItemString);
             console.log(localStorage);
         }
+
+
+        // console.log(localStorage);
+        // let cart = localStorage.getItem("cart");
+        // if(cart.hasOwnProperty(productName)) {
+        //     let filteredCartElement = Object.keys(cart).filter(function(key) {
+        //         key.includes(productName)
+        //     }).reduce(function(obj, key) {
+        //         return Object.assign(obj, {
+        //             [key]: cart[key]
+        //         })
+        //     }, {})
+        //     let currentProduct = JSON.parse(filteredCartElement);
+        //     console.log(currentProduct);
+        //     let currentProductQuantity = currentProduct[0].quantity;
+        //     console.log("current product quantity is " + currentProductQuantity);
+        //     console.log("the new product quantity is " + newProductQuantity);
+        //     let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
+        //     console.log("the final product quantity is " + finalProductQuantity);
+        //     newItemJSON = {
+        //         name: item.name,
+        //         id: item._id,
+        //         color: colorsList.value,
+        //         quantity: finalProductQuantity,
+        //         imageUrl: item.imageUrl,
+        //         altTxt: item.altTxt,
+        //         price: item.price
+        //     };
+        //     newCart = cart;
+        //     newCart[ProductName] = newItemJSON;
+        //     // productsList.push(newItemJSON);
+        //     newItemString = JSON.stringify(newCart);
+        //     localStorage.removeItem("cart");
+        //     localStorage.setItem("cart", newCart);
+        //     console.log(newCart);
+        //     console.log(localStorage);
+        //     } else {
+        //     newCart = cart;
+        //     newCart[productName] = newItemJSON
+        //     // productsList.push(newItemJSON);
+        //     localStorage.removeItem("cart");
+        //     localStorage.setItem("cart", newCart);
+        //     console.log(newCart);
+        //     console.log(localStorage);
+        // }
 
         
         
