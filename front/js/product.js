@@ -47,6 +47,8 @@ async function retrieveItems() {
         // localStorage.clear();
         console.log("vous venez d'appuyer sur le bouton");
         let colorsList = document.getElementById("colors");
+        console.log(colorsList.value)
+
         let quantity = document.getElementById('quantity');
         let productName = `${item.name} `+`${colorsList.value}`;
         let productsList = [];
@@ -84,12 +86,17 @@ async function retrieveItems() {
             newItemString = JSON.stringify(productsList);
             localStorage.setItem(productName, newItemString);
             console.log(localStorage);
-            } else {
+        } else if(colorsList.value === "") {
+            window.alert("Veuillez sélectionner une couleur")
+        } else if(parseInt(quantity.value) === 0) {
+            window.alert("Veuillez sélectionner une quantité valable")
+        } else {
             productsList.push(newItemJSON);
             newItemString = JSON.stringify(productsList);
             localStorage.setItem(productName, newItemString);
             console.log(localStorage);
-        }
+        } 
+        
 
 
         // console.log(localStorage);
