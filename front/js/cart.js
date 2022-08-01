@@ -213,42 +213,92 @@ function validateForm(input) {
     //     console.log("email is false")
     //     inputInFocus.style.backgroundColor = "red"
     // }
-    
+    let firstNameAlert = document.getElementById("firstNameAlert")
+    let lastNameAlert = document.getElementById("lastNameAlert")
+    let addressAlert = document.getElementById("addressAlert")
+    let cityAlert = document.getElementById("cityAlert")
+    let emailAlert = document.getElementById("emailAlert")
 
     if(nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
         console.log("first name is false")
-        inputInFocus.style.backgroundColor = "red"
+        inputInFocus.style.backgroundColor = "#FF8CA3"
+        if(!firstNameAlert) {
+            let alertMessage = document.createElement("p.firstNameAlert")
+            alertMessage.setAttribute("id", "firstNameAlert")
+            alertMessage.innerHTML = "Veuillez saisir un prénom valide"
+            inputInFocus.insertAdjacentElement('afterend', alertMessage)
+        }
+       
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
         console.log("first name is true")
         inputInFocus.style.backgroundColor = "white"
+        if(firstNameAlert) {
+            firstNameAlert.remove()
+        }
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
         console.log("last name is false")
-        inputInFocus.style.backgroundColor = "red"
+        inputInFocus.style.backgroundColor = "#FF8CA3"
+        if(!lastNameAlert) {
+            let alertMessage = document.createElement("p.lastNameAlert")
+            alertMessage.setAttribute("id", "lastNameAlert")
+            alertMessage.innerHTML = "Veuillez saisir un nom de famille valide"
+            inputInFocus.insertAdjacentElement('afterend', alertMessage)
+        }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
         console.log("last name is true")
         inputInFocus.style.backgroundColor = "white"
+        if(lastNameAlert) {
+            lastNameAlert.remove()
+        }
     }
     if(addressRGEX.test(inputValue) && inputInFocus.name == "address") {
         console.log("address is false")
-        inputInFocus.style.backgroundColor = "red"
+        inputInFocus.style.backgroundColor = "#FF8CA3"
+        if(!addressAlert) {
+            let alertMessage = document.createElement("p.addressAlert")
+            alertMessage.setAttribute("id", "addressAlert")
+            alertMessage.innerHTML = "Veuillez saisir une adresse valide"
+            inputInFocus.insertAdjacentElement('afterend', alertMessage)
+        }
     } else if (!addressRGEX.test(inputValue) && inputInFocus.name == "address") {
         console.log("address is true")
         inputInFocus.style.backgroundColor = "white"
+        if(addressAlert) {
+            addressAlert.remove()
+        }
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "city") {
         console.log("city is false")
-        inputInFocus.style.backgroundColor = "red"
+        inputInFocus.style.backgroundColor = "#FF8CA3"
+        if(!cityAlert) {
+            let alertMessage = document.createElement("p.cityAlert")
+            alertMessage.setAttribute("id", "cityAlert")
+            alertMessage.innerHTML = "Veuillez saisir une ville existante"
+            inputInFocus.insertAdjacentElement('afterend', alertMessage)
+        }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "city") {
         console.log("city is true")
         inputInFocus.style.backgroundColor = "white"
+        if(cityAlert) {
+            cityAlert.remove()
+        }
     }
     if(!emailRGEX.test(inputValue) && inputInFocus.name == "email") {
         console.log("email is false")
-        inputInFocus.style.backgroundColor = "red"
+        inputInFocus.style.backgroundColor = "#FF8CA3"
+        if(!emailAlert) {
+            let alertMessage = document.createElement("p.emailAlert")
+            alertMessage.setAttribute("id", "emailAlert")
+            alertMessage.innerHTML = "Veuillez saisir un email valide"
+            inputInFocus.insertAdjacentElement('afterend', alertMessage)
+        }
     } else if (emailRGEX.test(inputValue) && inputInFocus.name == "email") {
         console.log("email is true")
         inputInFocus.style.backgroundColor = "white"
+        if(emailAlert) {
+            emailAlert.remove()
+        }
     }
     
 }
@@ -256,6 +306,7 @@ function validateForm(input) {
 function sendForm(e) {
     e.preventDefault()
     console.log("Youpi vous avez appuyé sur le bouton !")
+    console.log(allAlerts)
 
 }
 
