@@ -169,43 +169,88 @@ async function showTotalOnPage() {
     totalPriceHtml.innerHTML = totalPriceInCart;
 }
 
-function validateForm() {
-    let firstNameHTML = document.getElementById("firstName")
-    let firstName = firstNameHTML.value
-    let lastNameHTML = document.getElementById("lastName")
-    let lastName = lastNameHTML.value
-    let addressHTML = document.getElementById("address")
-    let address = addressHTML.value
-    let cityHTML = document.getElementById("city")
-    let city = cityHTML.value
-    let emailHTML = document.getElementById("email")
-    let email = emailHTML.value
-    console.log(firstName)
-    console.log(lastName)
-    console.log(address)
-    console.log(city)
-    console.log(email)
-    let nameRGEX = /[A-zÀ-ú]/
-    let addressRGEX = /[A-zÀ-ú0-9-]/
-    let emailRGEX = /(\w\.?)+@[\w\.-]+\.\w{2,}/
-    if(!firstName.match(nameRGEX)) {
+function validateForm(input) {
+    let inputInFocus = input.target
+    let inputValue = inputInFocus.value
+    // let firstNameHTML = document.getElementById("firstName")
+    // let firstName = firstNameHTML.value
+    // let lastNameHTML = document.getElementById("lastName")
+    // let lastName = lastNameHTML.value
+    // let addressHTML = document.getElementById("address")
+    // let address = addressHTML.value
+    // let cityHTML = document.getElementById("city")
+    // let city = cityHTML.value
+    // let emailHTML = document.getElementById("email")
+    // let email = emailHTML.value
+    // console.log(firstName)
+    // console.log(lastName)
+    // console.log(address)
+    // console.log(city)
+    // console.log(email)
+    let nameRGEX = /[^A-zÀ-ú-]/
+    let addressRGEX = /[^A-zÀ-ú0-9- ]/
+    // let emailRGEX = /(\w\.?)+@[\w\.-]+\.\w{2,}/
+    // let emailRGEX = /(\w\.?)+@[\w\.-]+\.\w{2,}/
+    let emailRGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    
+    // if(!inputValue.match(nameRGEX) && inputInFocus.name == "firstName") {
+    //     console.log("first name is false")
+    //     inputInFocus.style.backgroundColor = "red"
+    // }
+    // if(!inputValue.match(nameRGEX) && inputInFocus.name == "lastName") {
+    //     console.log("last name is false")
+    //     inputInFocus.style.backgroundColor = "red"
+    // }
+    // if(!inputValue.match(addressRGEX) && inputInFocus.name == "address") {
+    //     console.log("address is false")
+    //     inputInFocus.style.backgroundColor = "red"
+    // }
+    // if(!inputValue.match(nameRGEX) && inputInFocus.name == "city") {
+    //     console.log("city is false")
+    //     inputInFocus.style.backgroundColor = "red"
+    // }
+    // if(!inputValue.match(emailRGEX) && inputInFocus.name == "email") {
+    //     console.log("email is false")
+    //     inputInFocus.style.backgroundColor = "red"
+    // }
+    
+
+    if(nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
         console.log("first name is false")
-        firstNameHTML.style.color = "red"
-    } else {
-        firstNameHTML.style.color = "black"
+        inputInFocus.style.backgroundColor = "red"
+    } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
+        console.log("first name is true")
+        inputInFocus.style.backgroundColor = "white"
     }
-    if(!lastName.match(nameRGEX)) {
+    if(nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
         console.log("last name is false")
+        inputInFocus.style.backgroundColor = "red"
+    } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
+        console.log("last name is true")
+        inputInFocus.style.backgroundColor = "white"
     }
-    if(!address.match(addressRGEX)) {
-        console.log("adress is false")
+    if(addressRGEX.test(inputValue) && inputInFocus.name == "address") {
+        console.log("address is false")
+        inputInFocus.style.backgroundColor = "red"
+    } else if (!addressRGEX.test(inputValue) && inputInFocus.name == "address") {
+        console.log("address is true")
+        inputInFocus.style.backgroundColor = "white"
     }
-    if(!city.match(nameRGEX)) {
+    if(nameRGEX.test(inputValue) && inputInFocus.name == "city") {
         console.log("city is false")
+        inputInFocus.style.backgroundColor = "red"
+    } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "city") {
+        console.log("city is true")
+        inputInFocus.style.backgroundColor = "white"
     }
-    if(!email.match(emailRGEX)) {
+    if(!emailRGEX.test(inputValue) && inputInFocus.name == "email") {
         console.log("email is false")
+        inputInFocus.style.backgroundColor = "red"
+    } else if (emailRGEX.test(inputValue) && inputInFocus.name == "email") {
+        console.log("email is true")
+        inputInFocus.style.backgroundColor = "white"
     }
+    
 }
 
 function sendForm(e) {
