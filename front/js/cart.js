@@ -40,6 +40,12 @@ window.onload = function() {
     });
     countTotalItemsInCart();
     countTotalPriceInCart();
+    formInputs = document.querySelectorAll("form input")
+    formInputs.forEach(element => {
+        element.addEventListener("input", validateForm, false);
+    });
+    submitFormButton = document.getElementById("order")
+    submitFormButton.addEventListener("click", sendForm, false)
 }
 
 async function fetchItemToChange() {
@@ -161,6 +167,51 @@ async function showTotalOnPage() {
     totalPriceHtml = document.getElementById("totalPrice");
     totalQuantityHtml.innerHTML = totalItemsInCart;
     totalPriceHtml.innerHTML = totalPriceInCart;
+}
+
+function validateForm() {
+    let firstNameHTML = document.getElementById("firstName")
+    let firstName = firstNameHTML.value
+    let lastNameHTML = document.getElementById("lastName")
+    let lastName = lastNameHTML.value
+    let addressHTML = document.getElementById("address")
+    let address = addressHTML.value
+    let cityHTML = document.getElementById("city")
+    let city = cityHTML.value
+    let emailHTML = document.getElementById("email")
+    let email = emailHTML.value
+    console.log(firstName)
+    console.log(lastName)
+    console.log(address)
+    console.log(city)
+    console.log(email)
+    let nameRGEX = /[A-zÀ-ú]/
+    let addressRGEX = /[A-zÀ-ú0-9-]/
+    let emailRGEX = /(\w\.?)+@[\w\.-]+\.\w{2,}/
+    if(!firstName.match(nameRGEX)) {
+        console.log("first name is false")
+        firstNameHTML.style.color = "red"
+    } else {
+        firstNameHTML.style.color = "black"
+    }
+    if(!lastName.match(nameRGEX)) {
+        console.log("last name is false")
+    }
+    if(!address.match(addressRGEX)) {
+        console.log("adress is false")
+    }
+    if(!city.match(nameRGEX)) {
+        console.log("city is false")
+    }
+    if(!email.match(emailRGEX)) {
+        console.log("email is false")
+    }
+}
+
+function sendForm(e) {
+    e.preventDefault()
+    console.log("Youpi vous avez appuyé sur le bouton !")
+
 }
 
 
