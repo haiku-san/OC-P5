@@ -303,11 +303,60 @@ function validateForm(input) {
     
 }
 
+function createProductsList() {
+    allCartItems = document.querySelectorAll("article.cart__item")
+    allProductsList = []
+    allCartItems.forEach(element => {
+        currentItemId = element.getAttribute("data-id")
+        allProductsList.push(currentItemId)
+    })
+    return allProductsList
+}
+
+async function fetchOrder() {
+    const response = await fetch(`http://localhost:3000/api/products/order`, {
+        method: "POST",
+        body: {
+            contact: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                address: address,
+                city: city,
+                email: email,
+            }),
+            products: JSON.stringify(allProductsList)
+        },
+        headers: new Headers()
+
+    });
+    return orderRequest = await response.json();
+}
+
 function sendForm(e) {
     e.preventDefault()
     console.log("Youpi vous avez appuyé sur le bouton !")
-    console.log(allAlerts)
+    // console.log(allAlerts)
 
+    firstName = document.querySelector("input[id=firstName]").value
+    lastName = document.querySelector("input[id=lastName]").value
+    address = document.querySelector("input[id=address]").value
+    city = document.querySelector("input[id=city]").value
+    email = document.querySelector("input[id=email]").value
+
+    console.log(firstName)
+    console.log(lastName)
+    console.log(address)
+    console.log(city)
+    console.log(email)
+
+    createProductsList()
+
+    fetchOrder().catch(err => {
+        console.log(err)
+    })
+    console.log(orderRequest)
+    
+    
 }
 
 
