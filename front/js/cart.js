@@ -350,13 +350,13 @@ async function fetchOrder() {
 
     }
     const response = await fetch(`http://localhost:3000/api/products/order`, options);
-    console.log(allProductsList)
-    console.log(response)
+    await console.log(allProductsList)
+    await console.log(response)
     
-    return orderRequest = await response.json();
+    return await response.json();
 }
 
-function sendForm(e) {
+async function sendForm(e) {
     e.preventDefault()
     console.log("Youpi vous avez appuyé sur le bouton !")
     // console.log(allAlerts)
@@ -366,12 +366,19 @@ function sendForm(e) {
     createProductsList()
     console.log(allProductsList)
 
-    fetchOrder().catch(err => {
+    let orderRequestRes = await fetchOrder().then(res => {
+        console.log(res)
+
+        return res
+    }).then(res => {
+        orderId = res.orderId
+        console.log(orderId)
+        
+    }).catch(err => {
         console.log(err)
     })
-    console.log("Voici la réponse : ")
-    console.log(orderRequest)
-    
+
+
 }
 
 
