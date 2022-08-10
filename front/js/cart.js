@@ -314,21 +314,45 @@ function createProductsList() {
 }
 
 async function fetchOrder() {
-    const response = await fetch(`http://localhost:3000/api/products/order`, {
-        method: "POST",
-        body: {
-            contact: JSON.stringify({
-                firstName: firstName,
-                lastName: lastName,
-                address: address,
-                city: city,
-                email: email,
-            }),
-            products: JSON.stringify(allProductsList)
-        },
-        headers: new Headers()
+    firstName = document.querySelector("input[id=firstName]").value
+    lastName = document.querySelector("input[id=lastName]").value
+    address = document.querySelector("input[id=address]").value
+    city = document.querySelector("input[id=city]").value
+    email = document.querySelector("input[id=email]").value
 
-    });
+    
+
+    console.log(firstName)
+    console.log(lastName)
+    console.log(address)
+    console.log(city)
+    console.log(email)
+
+    let data = {
+        contact: {
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+        city: city,
+        email: email,
+        },
+        products: allProductsList
+    }
+
+    console.log(data)
+
+    let options = {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+
+    }
+    const response = await fetch(`http://localhost:3000/api/products/order`, options);
+    console.log(allProductsList)
+    console.log(response)
+    
     return orderRequest = await response.json();
 }
 
@@ -337,25 +361,16 @@ function sendForm(e) {
     console.log("Youpi vous avez appuyé sur le bouton !")
     // console.log(allAlerts)
 
-    firstName = document.querySelector("input[id=firstName]").value
-    lastName = document.querySelector("input[id=lastName]").value
-    address = document.querySelector("input[id=address]").value
-    city = document.querySelector("input[id=city]").value
-    email = document.querySelector("input[id=email]").value
-
-    console.log(firstName)
-    console.log(lastName)
-    console.log(address)
-    console.log(city)
-    console.log(email)
+    
 
     createProductsList()
+    console.log(allProductsList)
 
     fetchOrder().catch(err => {
         console.log(err)
     })
+    console.log("Voici la réponse : ")
     console.log(orderRequest)
-    
     
 }
 
