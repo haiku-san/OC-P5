@@ -1,6 +1,8 @@
 let cartItemsList = document.getElementById("cart__items");
 let totalItemsInCart = 0;
 
+let bool = true
+
 console.log(localStorage);
 
 document.title = "Votre panier";
@@ -45,7 +47,7 @@ window.onload = function() {
         element.addEventListener("input", validateForm, false);
     });
     submitFormButton = document.getElementById("order")
-    submitFormButton.addEventListener("click", sendForm, false)
+    submitFormButton.addEventListener("click", e => {sendForm(e, bool)}, false)
 }
 
 async function fetchItemToChange() {
@@ -170,7 +172,9 @@ async function showTotalOnPage() {
 }
 
 function validateForm(input) {
-    let inputInFocus = input.target
+    console.log(bool)
+    let inputInFocus = input.target || input
+    console.log(inputInFocus)
     let inputValue = inputInFocus.value
     // let firstNameHTML = document.getElementById("firstName")
     // let firstName = firstNameHTML.value
@@ -219,6 +223,10 @@ function validateForm(input) {
     let cityAlert = document.getElementById("cityAlert")
     let emailAlert = document.getElementById("emailAlert")
 
+    if(inputInFocus.value == "") {
+        console.log("On vérifie si les inputs sont vides")
+        bool = false
+    }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
         console.log("first name is false")
         inputInFocus.style.backgroundColor = "#FF8CA3"
@@ -227,6 +235,7 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "firstNameAlert")
             alertMessage.innerHTML = "Veuillez saisir un prénom valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
+            bool = false
         }
        
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
@@ -234,6 +243,7 @@ function validateForm(input) {
         inputInFocus.style.backgroundColor = "white"
         if(firstNameAlert) {
             firstNameAlert.remove()
+
         }
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
@@ -244,12 +254,15 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "lastNameAlert")
             alertMessage.innerHTML = "Veuillez saisir un nom de famille valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
+            bool = false
+
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
         console.log("last name is true")
         inputInFocus.style.backgroundColor = "white"
         if(lastNameAlert) {
             lastNameAlert.remove()
+
         }
     }
     if(addressRGEX.test(inputValue) && inputInFocus.name == "address") {
@@ -260,12 +273,15 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "addressAlert")
             alertMessage.innerHTML = "Veuillez saisir une adresse valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
+            bool = false
+
         }
     } else if (!addressRGEX.test(inputValue) && inputInFocus.name == "address") {
         console.log("address is true")
         inputInFocus.style.backgroundColor = "white"
         if(addressAlert) {
             addressAlert.remove()
+
         }
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "city") {
@@ -276,12 +292,15 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "cityAlert")
             alertMessage.innerHTML = "Veuillez saisir une ville existante"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
+            bool = false
+
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "city") {
         console.log("city is true")
         inputInFocus.style.backgroundColor = "white"
         if(cityAlert) {
             cityAlert.remove()
+
         }
     }
     if(!emailRGEX.test(inputValue) && inputInFocus.name == "email") {
@@ -292,14 +311,21 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "emailAlert")
             alertMessage.innerHTML = "Veuillez saisir un email valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
+            bool = false
+
         }
     } else if (emailRGEX.test(inputValue) && inputInFocus.name == "email") {
         console.log("email is true")
         inputInFocus.style.backgroundColor = "white"
         if(emailAlert) {
             emailAlert.remove()
+
         }
     }
+
+    console.log(bool)
+
+
     
 }
 
@@ -350,34 +376,43 @@ async function fetchOrder() {
 
     }
     const response = await fetch(`http://localhost:3000/api/products/order`, options);
-    await console.log(allProductsList)
-    await console.log(response)
+    console.log(allProductsList)
+    console.log(response)
     
     return await response.json();
 }
 
-async function sendForm(e) {
+
+
+async function sendForm(e, bool) {
     e.preventDefault()
     console.log("Youpi vous avez appuyé sur le bouton !")
     // console.log(allAlerts)
 
-    
-
     createProductsList()
     console.log(allProductsList)
+    formInputs.forEach(element => {
+        validateForm(element)
+    });    
+    console.log(bool)
+    if(bool == true) {
+        let orderRequestRes = await fetchOrder().then(res => {
+            console.log(res)
+    
+            return res
+        }).then(res => {
+            orderId = res.orderId
+            console.log(orderId)
+    
+        }).catch(err => {
+            console.log(err)
+        })
+    
+    } else {
+        alert("Veuillez corriger le formulaire svp")
+    }
 
-    let orderRequestRes = await fetchOrder().then(res => {
-        console.log(res)
-
-        return res
-    }).then(res => {
-        orderId = res.orderId
-        console.log(orderId)
-        
-    }).catch(err => {
-        console.log(err)
-    })
-
+   
 
 }
 
