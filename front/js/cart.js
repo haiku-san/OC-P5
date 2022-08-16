@@ -1,7 +1,8 @@
 let cartItemsList = document.getElementById("cart__items");
 let totalItemsInCart = 0;
+let totalPriceInCart = 0;
 
-let bool = true
+let formIsValid = true
 
 console.log(localStorage);
 
@@ -47,7 +48,7 @@ window.onload = function() {
         element.addEventListener("input", validateForm, false);
     });
     submitFormButton = document.getElementById("order")
-    submitFormButton.addEventListener("click", e => {sendForm(e, bool)}, false)
+    submitFormButton.addEventListener("click", e => {sendForm(e, formIsValid)}, false)
 }
 
 async function fetchItemToChange() {
@@ -172,7 +173,7 @@ async function showTotalOnPage() {
 }
 
 function validateForm(input) {
-    console.log(bool)
+    console.log(formIsValid)
     let inputInFocus = input.target || input
     console.log(inputInFocus)
     let inputValue = inputInFocus.value
@@ -225,7 +226,7 @@ function validateForm(input) {
 
     if(inputInFocus.value == "") {
         console.log("On vérifie si les inputs sont vides")
-        bool = false
+        formIsValid = false
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
         console.log("first name is false")
@@ -235,7 +236,7 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "firstNameAlert")
             alertMessage.innerHTML = "Veuillez saisir un prénom valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            bool = false
+            formIsValid = false
         }
        
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
@@ -254,7 +255,7 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "lastNameAlert")
             alertMessage.innerHTML = "Veuillez saisir un nom de famille valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            bool = false
+            formIsValid = false
 
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
@@ -273,7 +274,7 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "addressAlert")
             alertMessage.innerHTML = "Veuillez saisir une adresse valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            bool = false
+            formIsValid = false
 
         }
     } else if (!addressRGEX.test(inputValue) && inputInFocus.name == "address") {
@@ -292,7 +293,7 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "cityAlert")
             alertMessage.innerHTML = "Veuillez saisir une ville existante"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            bool = false
+            formIsValid = false
 
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "city") {
@@ -311,7 +312,7 @@ function validateForm(input) {
             alertMessage.setAttribute("id", "emailAlert")
             alertMessage.innerHTML = "Veuillez saisir un email valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            bool = false
+            formIsValid = false
 
         }
     } else if (emailRGEX.test(inputValue) && inputInFocus.name == "email") {
@@ -323,7 +324,7 @@ function validateForm(input) {
         }
     }
 
-    console.log(bool)
+    console.log(formIsValid)
 
 
     
@@ -384,25 +385,26 @@ async function fetchOrder() {
 
 
 
-async function sendForm(e, bool) {
+async function sendForm(e) {
     e.preventDefault()
     console.log("Youpi vous avez appuyé sur le bouton !")
     // console.log(allAlerts)
 
     createProductsList()
     console.log(allProductsList)
+    formIsValid = true
     formInputs.forEach(element => {
         validateForm(element)
     });    
-    console.log(bool)
-    if(bool == true) {
+    console.log(formIsValid)
+    if(formIsValid == true) {
         let orderRequestRes = await fetchOrder().then(res => {
             console.log(res)
-    
             return res
         }).then(res => {
             orderId = res.orderId
             console.log(orderId)
+            window.location.assign(`./confirmation.html?orderId=${orderId}`)
     
         }).catch(err => {
             console.log(err)
