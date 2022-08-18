@@ -1,6 +1,7 @@
 let cartItemsList = document.getElementById("cart__items");
 let totalItemsInCart = 0;
 let totalPriceInCart = 0;
+let cartPriceHTML = ""
 
 let formIsValid = true
 
@@ -32,6 +33,7 @@ async function showInCart() {
 }
 
 window.onload = function() {
+    cartPriceHTML = document.querySelector("div.cart__price")
     allQuantityInputs = document.querySelectorAll("input[name='itemQuantity']");
     console.log(allQuantityInputs)
     allQuantityInputs.forEach(element => {
@@ -180,10 +182,17 @@ async function modifyItemQuantity() {
 } 
 
 async function showTotalOnPage() {
-    totalQuantityHtml = document.getElementById("totalQuantity");
-    totalPriceHtml = document.getElementById("totalPrice");
-    totalQuantityHtml.innerHTML = totalItemsInCart;
-    totalPriceHtml.innerHTML = totalPriceInCart;
+    console.log(cartPriceHTML)
+    if(totalItemsInCart < 2) {
+        cartPriceHTML.innerHTML = `<p>Total (<span id='totalQuantity'>${totalItemsInCart}</span> article) : <span id='totalPrice'>${totalPriceInCart}</span> €</p>`
+    } else {
+        cartPriceHTML.innerHTML = `<p>Total (<span id='totalQuantity'>${totalItemsInCart}</span> articles) : <span id='totalPrice'>${totalPriceInCart}</span> €</p>`
+    }
+    // totalQuantityHtml = document.getElementById("totalQuantity");
+    // totalPriceHtml = document.getElementById("totalPrice");
+    // totalQuantityHtml.innerHTML = totalItemsInCart;
+    // totalPriceHtml.innerHTML = totalPriceInCart;
+    
 }
 
 function validateForm(input) {
