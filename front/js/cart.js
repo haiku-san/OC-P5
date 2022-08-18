@@ -48,7 +48,7 @@ window.onload = function() {
         element.addEventListener("input", validateForm, false);
     });
     submitFormButton = document.getElementById("order")
-    submitFormButton.addEventListener("click", e => {sendForm(e, formIsValid)}, false)
+    submitFormButton.addEventListener("click", e => {sendForm(e)}, false)
 }
 
 async function fetchItemToChange() {
@@ -82,23 +82,37 @@ async function countTotalItemsInCart() {
 async function countTotalPriceInCart() {
     let itemsPrices = [];
     allCartItems = document.querySelectorAll("article.cart__item");
+    console.log(allCartItems)
     if(allCartItems.length === 0) {
         totalPriceInCart = 0
     } else {
     allCartItems.forEach(element => {
+        console.log(element)
         let input = element.querySelector("input");
+        console.log(input)
         let itemId = input.closest("article").getAttribute("data-id");
-        itemObject = {};
+        console.log(itemId)
+        itemObjects = [];
         for (item in localStorage) {
             if (localStorage.getItem(item)) {
                 let itemObjectJSON = localStorage.getItem(item);
-                itemObject = JSON.parse(itemObjectJSON);
+                itemObjects.push(JSON.parse(itemObjectJSON))
             }
-        };
-        if (itemObject[0].id === itemId) {
-            itemObject[0].quantity = parseInt(input.value);
-            itemsPrices.push(itemObject[0].price * itemObject[0].quantity)
+            
         }
+        console.log(itemObjects)
+
+        itemObjects.forEach(itemObject => {
+            if (itemObject[0].id === itemId) {
+                console.log(itemObject)
+                itemObject[0].quantity = parseInt(input.value);
+                console.log(parseInt(input.value))
+                itemsPrices.push(itemObject[0].price * itemObject[0].quantity)
+            }
+        })
+
+        
+        
     });   
     totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
     }
@@ -149,7 +163,7 @@ async function modifyItemQuantity() {
         let itemQuantityValue = element.value;
         countTotalItemsInCart();
         countTotalPriceInCart();
-        deleteItemInCart();
+        // deleteItemInCart();
         itemToChange = element.closest("article.cart__item");
         itemToChangeId = itemToChange.getAttribute("data-id");
         item = fetchItemToChange();
@@ -228,15 +242,21 @@ function validateForm(input) {
         console.log("On vérifie si les inputs sont vides")
         formIsValid = false
     }
+    console.log(inputValue)
+
     if(nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
         console.log("first name is false")
+        formIsValid = false
+        console.log("is first name valid?")
+        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!firstNameAlert) {
             let alertMessage = document.createElement("p.firstNameAlert")
             alertMessage.setAttribute("id", "firstNameAlert")
             alertMessage.innerHTML = "Veuillez saisir un prénom valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            formIsValid = false
+            
+
         }
        
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
@@ -249,13 +269,16 @@ function validateForm(input) {
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
         console.log("last name is false")
+        formIsValid = false
+        console.log("is last name valid?")
+        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!lastNameAlert) {
             let alertMessage = document.createElement("p.lastNameAlert")
             alertMessage.setAttribute("id", "lastNameAlert")
             alertMessage.innerHTML = "Veuillez saisir un nom de famille valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            formIsValid = false
+            
 
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
@@ -268,13 +291,16 @@ function validateForm(input) {
     }
     if(addressRGEX.test(inputValue) && inputInFocus.name == "address") {
         console.log("address is false")
+        formIsValid = false
+        console.log("is address valid?")
+        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!addressAlert) {
             let alertMessage = document.createElement("p.addressAlert")
             alertMessage.setAttribute("id", "addressAlert")
             alertMessage.innerHTML = "Veuillez saisir une adresse valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            formIsValid = false
+            
 
         }
     } else if (!addressRGEX.test(inputValue) && inputInFocus.name == "address") {
@@ -287,13 +313,16 @@ function validateForm(input) {
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "city") {
         console.log("city is false")
+        formIsValid = false
+        console.log("is city valid?")
+        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!cityAlert) {
             let alertMessage = document.createElement("p.cityAlert")
             alertMessage.setAttribute("id", "cityAlert")
             alertMessage.innerHTML = "Veuillez saisir une ville existante"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            formIsValid = false
+            
 
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "city") {
@@ -306,13 +335,16 @@ function validateForm(input) {
     }
     if(!emailRGEX.test(inputValue) && inputInFocus.name == "email") {
         console.log("email is false")
+        formIsValid = false
+        console.log("is email valid?")
+        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!emailAlert) {
             let alertMessage = document.createElement("p.emailAlert")
             alertMessage.setAttribute("id", "emailAlert")
             alertMessage.innerHTML = "Veuillez saisir un email valide"
             inputInFocus.insertAdjacentElement('afterend', alertMessage)
-            formIsValid = false
+            
 
         }
     } else if (emailRGEX.test(inputValue) && inputInFocus.name == "email") {
