@@ -446,17 +446,23 @@ async function sendForm(e) {
     });    
     console.log(formIsValid)
     if(formIsValid == true) {
-        let orderRequestRes = await fetchOrder().then(res => {
-            console.log(res)
-            return res
-        }).then(res => {
-            orderId = res.orderId
-            console.log(orderId)
-            window.location.assign(`./confirmation.html?orderId=${orderId}`)
-    
-        }).catch(err => {
-            console.log(err)
-        })
+        if(confirm("Voulez-vous vraiment procéder à la commande ?") == true) {
+            await fetchOrder().then(res => {
+                console.log(res)
+                return res
+            }).then(res => {
+                orderId = res.orderId
+                console.log(orderId)
+                alert("Votre commande a été validée")
+                window.location.assign(`./confirmation.html?orderId=${orderId}`)
+        
+            }).catch(err => {
+                console.log(err)
+            })
+        } else {
+            alert("La commande n'a pas été passée")
+        }
+        
     
     } else {
         alert("Veuillez corriger le formulaire svp")
