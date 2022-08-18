@@ -27,8 +27,6 @@ async function showInCart() {
             
     
         }
-        // countTotalItemsInCart();
-        // countTotalPriceInCart();
     }
 }
 
@@ -77,7 +75,6 @@ async function countTotalItemsInCart() {
     showTotalOnPage();
     
 
-    // return totalItemsInCart;
     
 }
 
@@ -121,17 +118,14 @@ async function countTotalPriceInCart() {
     console.log(`Total price in cart is ${totalPriceInCart}`)
 
     showTotalOnPage();
-    // return totalPriceInCart;
 }
 
 async function deleteItemInCart(e) {
     let deleteButton = e.target;
     console.log(deleteButton);
-    // let itemName = deleteButton.closest("article h2");
     let itemArticle = deleteButton.closest("article");
     let itemColor = itemArticle.getAttribute("data-color");
     let itemId = itemArticle.getAttribute("data-id");
-    // console.log(itemName);
     itemObject = {};
     if(confirm("Voulez-vous vraiment supprimer cet article de votre panier ?") == true) {
         for (item in localStorage) {
@@ -164,7 +158,6 @@ async function deleteItemInCart(e) {
     console.log(localStorage);
 
     
-    // showTotalOnPage();
 }
 
 async function modifyItemQuantity() {
@@ -172,20 +165,10 @@ async function modifyItemQuantity() {
         let itemQuantityValue = element.value;
         countTotalItemsInCart();
         countTotalPriceInCart();
-        // deleteItemInCart();
         itemToChange = element.closest("article.cart__item");
         itemToChangeId = itemToChange.getAttribute("data-id");
         item = fetchItemToChange();
-        // itemObject = item.result;
-        // console.log(itemObject);
-        // item.quantity = itemQuantityValue;
-        // console.log("the item's quantity is " + item.quantity);
-        // console.log(localStorage);
-
     });   
-//    for(item in cartItemsList) {
-        
-//    }
 } 
 
 async function showTotalOnPage() {
@@ -195,10 +178,6 @@ async function showTotalOnPage() {
     } else {
         cartPriceHTML.innerHTML = `<p>Total (<span id='totalQuantity'>${totalItemsInCart}</span> articles) : <span id='totalPrice'>${totalPriceInCart}</span> €</p>`
     }
-    // totalQuantityHtml = document.getElementById("totalQuantity");
-    // totalPriceHtml = document.getElementById("totalPrice");
-    // totalQuantityHtml.innerHTML = totalItemsInCart;
-    // totalPriceHtml.innerHTML = totalPriceInCart;
     
 }
 
@@ -207,47 +186,9 @@ function validateForm(input) {
     let inputInFocus = input.target || input
     console.log(inputInFocus)
     let inputValue = inputInFocus.value
-    // let firstNameHTML = document.getElementById("firstName")
-    // let firstName = firstNameHTML.value
-    // let lastNameHTML = document.getElementById("lastName")
-    // let lastName = lastNameHTML.value
-    // let addressHTML = document.getElementById("address")
-    // let address = addressHTML.value
-    // let cityHTML = document.getElementById("city")
-    // let city = cityHTML.value
-    // let emailHTML = document.getElementById("email")
-    // let email = emailHTML.value
-    // console.log(firstName)
-    // console.log(lastName)
-    // console.log(address)
-    // console.log(city)
-    // console.log(email)
     let nameRGEX = /[^A-zÀ-ú-]/
     let addressRGEX = /[^A-zÀ-ú0-9- ]/
-    // let emailRGEX = /(\w\.?)+@[\w\.-]+\.\w{2,}/
-    // let emailRGEX = /(\w\.?)+@[\w\.-]+\.\w{2,}/
     let emailRGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-    
-    // if(!inputValue.match(nameRGEX) && inputInFocus.name == "firstName") {
-    //     console.log("first name is false")
-    //     inputInFocus.style.backgroundColor = "red"
-    // }
-    // if(!inputValue.match(nameRGEX) && inputInFocus.name == "lastName") {
-    //     console.log("last name is false")
-    //     inputInFocus.style.backgroundColor = "red"
-    // }
-    // if(!inputValue.match(addressRGEX) && inputInFocus.name == "address") {
-    //     console.log("address is false")
-    //     inputInFocus.style.backgroundColor = "red"
-    // }
-    // if(!inputValue.match(nameRGEX) && inputInFocus.name == "city") {
-    //     console.log("city is false")
-    //     inputInFocus.style.backgroundColor = "red"
-    // }
-    // if(!inputValue.match(emailRGEX) && inputInFocus.name == "email") {
-    //     console.log("email is false")
-    //     inputInFocus.style.backgroundColor = "red"
-    // }
     let firstNameAlert = document.getElementById("firstNameAlert")
     let lastNameAlert = document.getElementById("lastNameAlert")
     let addressAlert = document.getElementById("addressAlert")
@@ -436,8 +377,6 @@ async function fetchOrder() {
 async function sendForm(e) {
     e.preventDefault()
     console.log("Youpi vous avez appuyé sur le bouton !")
-    // console.log(allAlerts)
-
     createProductsList()
     console.log(allProductsList)
     formIsValid = true
@@ -471,30 +410,3 @@ async function sendForm(e) {
    
 
 }
-
-
-// form.addEventListener("submit", function(e) {e.preventDefault()})
-
-
-
-/* <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-    <div class="cart__item__img">
-        <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-    </div>
-    <div class="cart__item__content">
-        <div class="cart__item__content__description">
-            <h2>Nom du produit</h2>
-            <p>Vert</p>
-            <p>42,00 €</p>
-        </div>
-        <div class="cart__item__content__settings">
-            <div class="cart__item__content__settings__quantity">
-                <p>Qté : </p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-            </div>
-            <div class="cart__item__content__settings__delete">
-                <p class="deleteItem">Supprimer</p>
-            </div>
-        </div>
-    </div>
-</article> */

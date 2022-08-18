@@ -5,8 +5,6 @@ let url = new URL(window.location.href)
 let id = url.searchParams.get("id");
 console.log(id);
 
-// let cart = {};
-// localStorage.setItem("cart", cart);
 
 
 
@@ -31,21 +29,14 @@ async function retrieveItems() {
     item.colors.forEach(function(color) {
         console.log(color)
         let colorsList = document.getElementById("colors");
-        // let option = "";
-        // option.innerHTML = `<option value="${color}">${color}</option>`;
         colorsList.insertAdjacentHTML("beforeend", `<option value="${color}">${color}</option>`);
     })
 
-// for (const product of itemsList) {
-//     let productPage = document.createElement("article");
-//     productPage.innerHTML = `<div class="item__img"><img src=${product.imageUrl} alt=${product.altTxt}></div><div class="item__content"><div class="item__content__titlePrice"><h1 id="title">${product.name}</h1><p>Prix : <span id="price">${product.price}</span>€</p></div><div class="item__content__description"><p class="item__content__description__title">Description :</p><p id="description">${product.description}</p></div><div class="item__content__settings"><div class="item__content__settings__color"><label for="color-select">Choisir une couleur :</label><select name="color-select" id="colors"><option value="">--SVP, choisissez une couleur --</option><option value="vert">vert</option><option value="blanc">blanc</option></select></div><div class="item__content__settings__quantity"><label for="itemQuantity">Nombre d'article(s) (1-100) :</label><input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity"></div></div><div class="item__content__addButton"><button id="addToCart">Ajouter au panier</button></div></div>`;
-//     itemHtml.appendChild(productPage);
-// }
+
       
 
 
     async function addToCart() {
-        // localStorage.clear();
         console.log("vous venez d'appuyer sur le bouton");
         let colorsList = document.getElementById("colors");
         console.log(colorsList.value)
@@ -112,50 +103,7 @@ async function retrieveItems() {
         
 
 
-        // console.log(localStorage);
-        // let cart = localStorage.getItem("cart");
-        // if(cart.hasOwnProperty(productName)) {
-        //     let filteredCartElement = Object.keys(cart).filter(function(key) {
-        //         key.includes(productName)
-        //     }).reduce(function(obj, key) {
-        //         return Object.assign(obj, {
-        //             [key]: cart[key]
-        //         })
-        //     }, {})
-        //     let currentProduct = JSON.parse(filteredCartElement);
-        //     console.log(currentProduct);
-        //     let currentProductQuantity = currentProduct[0].quantity;
-        //     console.log("current product quantity is " + currentProductQuantity);
-        //     console.log("the new product quantity is " + newProductQuantity);
-        //     let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
-        //     console.log("the final product quantity is " + finalProductQuantity);
-        //     newItemJSON = {
-        //         name: item.name,
-        //         id: item._id,
-        //         color: colorsList.value,
-        //         quantity: finalProductQuantity,
-        //         imageUrl: item.imageUrl,
-        //         altTxt: item.altTxt,
-        //         price: item.price
-        //     };
-        //     newCart = cart;
-        //     newCart[ProductName] = newItemJSON;
-        //     // productsList.push(newItemJSON);
-        //     newItemString = JSON.stringify(newCart);
-        //     localStorage.removeItem("cart");
-        //     localStorage.setItem("cart", newCart);
-        //     console.log(newCart);
-        //     console.log(localStorage);
-        //     } else {
-        //     newCart = cart;
-        //     newCart[productName] = newItemJSON
-        //     // productsList.push(newItemJSON);
-        //     localStorage.removeItem("cart");
-        //     localStorage.setItem("cart", newCart);
-        //     console.log(newCart);
-        //     console.log(localStorage);
-        // }
-
+       
         
         
     }
