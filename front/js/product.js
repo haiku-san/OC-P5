@@ -67,35 +67,47 @@ async function retrieveItems() {
 
 
         if(localStorage.getItem(productName)) {
-            let currentProduct = JSON.parse(localStorage.getItem(productName));
-            console.log(currentProduct);
-            let currentProductQuantity = currentProduct[0].quantity;
-            console.log("current product quantity is " + currentProductQuantity);
-            console.log("the new product quantity is " + newProductQuantity);
-            let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
-            console.log("the final product quantity is " + finalProductQuantity);
-            newItemJSON = {
-                name: item.name,
-                id: item._id,
-                color: colorsList.value,
-                quantity: finalProductQuantity,
-                imageUrl: item.imageUrl,
-                altTxt: item.altTxt,
-                price: item.price
-            };
-            productsList.push(newItemJSON);
-            newItemString = JSON.stringify(productsList);
-            localStorage.setItem(productName, newItemString);
-            console.log(localStorage);
+            if(confirm("Voulez-vous ajouter ce produit au panier ?") == true) {
+                let currentProduct = JSON.parse(localStorage.getItem(productName));
+                console.log(currentProduct);
+                let currentProductQuantity = currentProduct[0].quantity;
+                console.log("current product quantity is " + currentProductQuantity);
+                console.log("the new product quantity is " + newProductQuantity);
+                let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
+                console.log("the final product quantity is " + finalProductQuantity);
+                newItemJSON = {
+                    name: item.name,
+                    id: item._id,
+                    color: colorsList.value,
+                    quantity: finalProductQuantity,
+                    imageUrl: item.imageUrl,
+                    altTxt: item.altTxt,
+                    price: item.price
+                };
+                productsList.push(newItemJSON);
+                newItemString = JSON.stringify(productsList);
+                localStorage.setItem(productName, newItemString);
+                console.log(localStorage);
+                alert("Le produit a bien été ajouté au panier")
+            } else {
+                alert("Le produit n'a pas été ajouté au panier")
+            }
+
         } else if(colorsList.value === "") {
             window.alert("Veuillez sélectionner une couleur")
         } else if(parseInt(quantity.value) === 0) {
             window.alert("Veuillez sélectionner une quantité valable")
         } else {
-            productsList.push(newItemJSON);
-            newItemString = JSON.stringify(productsList);
-            localStorage.setItem(productName, newItemString);
-            console.log(localStorage);
+            if(confirm("Voulez-vous ajouter ce produit au panier ?") == true) {
+                productsList.push(newItemJSON);
+                newItemString = JSON.stringify(productsList);
+                localStorage.setItem(productName, newItemString);
+                console.log(localStorage);
+                alert("Le produit a bien été ajouté au panier")
+            } else {
+                alert("Le produit n'a pas été ajouté au panier")
+            }
+           
         } 
         
 
