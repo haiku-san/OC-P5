@@ -133,21 +133,28 @@ async function deleteItemInCart(e) {
     let itemId = itemArticle.getAttribute("data-id");
     // console.log(itemName);
     itemObject = {};
-    for (item in localStorage) {
-        if (localStorage.getItem(item)) {
-            let itemObjectJSON = localStorage.getItem(item);
-            itemObject = JSON.parse(itemObjectJSON);
-        }
-        if (itemObject[0].id === itemId && itemObject[0].color === itemColor) {
-            console.log(itemId);
-            console.log(itemObject);
-            console.log(itemObject[0].id);
-            localStorage.removeItem(item)
-            itemArticle.remove()
+    if(confirm("Voulez-vous vraiment supprimer cet article de votre panier ?") == true) {
+        for (item in localStorage) {
+            if (localStorage.getItem(item)) {
+                let itemObjectJSON = localStorage.getItem(item);
+                itemObject = JSON.parse(itemObjectJSON);
+            }
+            if (itemObject[0].id === itemId && itemObject[0].color === itemColor) {
+                    console.log(itemId);
+                    console.log(itemObject);
+                    console.log(itemObject[0].id);
+                    localStorage.removeItem(item)
+                    itemArticle.remove()
+                    
+                
+            }
+            console.log("fin de la boucle for de la fonction deleteItemInCart")
+        };   
+        alert("Le produit a bien été supprimé de votre panier")
+    } else {
+        alert("Le produit n'a pas été supprimé de votre panier")
+    }
             
-        }
-        console.log("fin de la boucle for de la fonction deleteItemInCart")
-    };   
     console.log('On lance les fonctions des totaux')
     countTotalItemsInCart();
     countTotalPriceInCart();
