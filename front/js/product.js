@@ -36,7 +36,7 @@ async function retrieveItems() {
       
 
 
-    async function addToCart() {
+    function addToCart() {
         console.log("vous venez d'appuyer sur le bouton");
         let colorsList = document.getElementById("colors");
         console.log(colorsList.value)
