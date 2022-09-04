@@ -8,6 +8,7 @@ retrieveItems().catch(function(err) {
     console.log(err)
 });
 
+// Récupère les produits depuis l'API
 async function retrieveItems() {
     const response = await fetch('http://localhost:3000/api/products/');
     console.log(response);

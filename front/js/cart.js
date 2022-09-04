@@ -3,6 +3,7 @@ let totalItemsInCart = 0;
 let totalPriceInCart = 0;
 let cartPriceHTML = ""
 
+// On crée un boolean pour vérifier si le formulaire est correctement rempli ou non
 let formIsValid = true
 
 console.log(localStorage);
@@ -14,6 +15,8 @@ showInCart().catch(function(err) {
     console.log(err)
 });
 
+
+// On affiche les produits sur la page panier
 async function showInCart() {
     for(item in localStorage) {
         productInCart = JSON.parse(localStorage.getItem(item));
@@ -51,11 +54,14 @@ window.onload = function() {
     submitFormButton.addEventListener("click", e => {sendForm(e)}, false)
 }
 
+
 async function fetchItemToChange() {
     const response = await fetch(`http://localhost:3000/api/products/${itemToChangeId}`);
     return item = await response.json();
 }
 
+
+// Compte le nombre d'articles dans le panier
 function countTotalItemsInCart() {
     let itemsQuantities = [];
     allCartItems = document.querySelectorAll("article.cart__item");
@@ -78,8 +84,7 @@ function countTotalItemsInCart() {
     
 }
 
-/// Changer la fonction pour requeter le prix depuis l'API et non pas depuis le localstorage
-
+// Compte le prix total du panier
 function countTotalPriceInCart() {
     let itemsPrices = [];
     allCartItems = document.querySelectorAll("article.cart__item");
@@ -143,18 +148,18 @@ function countTotalPriceInCart() {
     }
 }
 
+// Récupère la liste des produits depuis l'API
 async function retrieveItems() {
     const response = await fetch('http://localhost:3000/api/products/');
     console.log(response);
     itemsList = await response.json();
 
     
-
-    
-    
     return itemsList
 }
 
+// Permet la suppression d'un article du panier lorsque l'on clique sur le bouton "supprimer"
+// @param e : le bouton "supprimer" 
 function deleteItemInCart(e) {
     let deleteButton = e.target;
     console.log(deleteButton);
@@ -195,6 +200,7 @@ function deleteItemInCart(e) {
     
 }
 
+// Permet la modification de la quantité d'un article directement depuis la page panier
 function modifyItemQuantity() {
     allQuantityInputs.forEach(element => {
         let itemQuantityValue = element.value;
@@ -206,6 +212,7 @@ function modifyItemQuantity() {
     });   
 } 
 
+// Affiche les totaux sur la page panier
 function showTotalOnPage() {
     console.log(cartPriceHTML)
     if(totalItemsInCart < 2) {
@@ -216,6 +223,8 @@ function showTotalOnPage() {
     
 }
 
+// Vérifie en temps réel si les informations saisies par l'utilisateur dans le formulaire sont erronnées
+// Permet de s'assurer que les informations envoyées au serveur correspondent aux informations attendues
 function validateForm(input) {
     console.log(formIsValid)
     let inputInFocus = input.target || input
@@ -354,6 +363,8 @@ function validateForm(input) {
     
 }
 
+
+// Crée la liste d'ID des produits dans le panier
 function createProductsList() {
     allCartItems = document.querySelectorAll("article.cart__item")
     allProductsList = []
@@ -364,6 +375,7 @@ function createProductsList() {
     return allProductsList
 }
 
+// Envoi la requête au serveur lors de la validation du panier
 async function fetchOrder() {
     firstName = document.querySelector("input[id=firstName]").value
     lastName = document.querySelector("input[id=lastName]").value
@@ -408,7 +420,8 @@ async function fetchOrder() {
 }
 
 
-
+// Permet de valider l'envoi du formulaire si celui-ci est valide
+// Sinon, prévient l'utilisateur que le formulaire doit être corrigé
 async function sendForm(e) {
     e.preventDefault()
     console.log("Youpi vous avez appuyé sur le bouton !")

@@ -8,11 +8,12 @@ console.log(id);
 
 
 
-
 retrieveItems().catch(function(err) {
     console.log(err)
 });
 
+
+// Récupère le produit à afficher depuis l'API
 async function retrieveItems() {
     const response = await fetch(`http://localhost:3000/api/products/${id}`);
     console.log(response);
@@ -35,7 +36,7 @@ async function retrieveItems() {
 
       
 
-
+    // Ajoute le produit dans le localStorage
     function addToCart() {
         console.log("vous venez d'appuyer sur le bouton");
         let colorsList = document.getElementById("colors");
