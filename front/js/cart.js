@@ -78,6 +78,8 @@ function countTotalItemsInCart() {
     
 }
 
+/// Changer la fonction pour requeter le prix depuis l'API et non pas depuis le localstorage
+
 function countTotalPriceInCart() {
     let itemsPrices = [];
     allCartItems = document.querySelectorAll("article.cart__item");
@@ -100,24 +102,57 @@ function countTotalPriceInCart() {
                 
             }
             console.log(itemObjects)
-            
-            itemObjects.forEach(itemObject => {
-                if (itemObject[0].id === itemId) {
-                    console.log(itemObject)
-                    itemObject[0].quantity = parseInt(input.value);
-                    console.log(parseInt(input.value))
-                    itemsPrices.push(itemObject[0].price * itemObject[0].quantity)
-                }
+
+            let itemsList = []
+
+            retrieveItems().then(res => {
+                itemObjects.forEach(itemObject => {
+                    if (itemObject[0].id === itemId) {
+                        let itemPrice = 0
+                        console.log(itemObject)
+                        itemObject[0].quantity = parseInt(input.value);
+                        console.log(parseInt(input.value))
+                        res.forEach(item => {
+                            if (itemObject[0].id === item._id) {
+                                itemPrice = item.price
+                                console.log(itemPrice)
+                                itemsPrices.push(Number(itemPrice) * itemObject[0].quantity)
+
+                            }
+                        })
+                    }
+                })
+
+                console.log("itemsPrices are")
+                console.log(itemsPrices)
+                console.log("TEST")
+                console.log(itemsPrices[0])
+                itemsPrices.forEach(price => {
+                    console.log("on rentre dans le forEach")
+                    console.log(price)
+                    console.log(typeof(price))
+                })
+                totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
+                console.log(`Total price in cart is ${totalPriceInCart}`)
+    
+                showTotalOnPage();
+
             })
             
-            
-            
         });   
-        totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
     }
-    console.log(`Total price in cart is ${totalPriceInCart}`)
+}
+
+async function retrieveItems() {
+    const response = await fetch('http://localhost:3000/api/products/');
+    console.log(response);
+    itemsList = await response.json();
+
     
-    showTotalOnPage();
+
+    
+    
+    return itemsList
 }
 
 function deleteItemInCart(e) {
@@ -160,7 +195,7 @@ function deleteItemInCart(e) {
     
 }
 
-async function modifyItemQuantity() {
+function modifyItemQuantity() {
     allQuantityInputs.forEach(element => {
         let itemQuantityValue = element.value;
         countTotalItemsInCart();
@@ -171,7 +206,7 @@ async function modifyItemQuantity() {
     });   
 } 
 
-async function showTotalOnPage() {
+function showTotalOnPage() {
     console.log(cartPriceHTML)
     if(totalItemsInCart < 2) {
         cartPriceHTML.innerHTML = `<p>Total (<span id='totalQuantity'>${totalItemsInCart}</span> article) : <span id='totalPrice'>${totalPriceInCart}</span> €</p>`

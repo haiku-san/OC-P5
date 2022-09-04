@@ -4,3 +4,5 @@ console.log(orderId);
 
 const orderIdHtml = document.getElementById("orderId")
 orderIdHtml.innerHTML = orderId
+
+localStorage.clear()
