@@ -6,7 +6,6 @@ let cartPriceHTML = ""
 // On crée un boolean pour vérifier si le formulaire est correctement rempli ou non
 let formIsValid = true
 
-console.log(localStorage);
 
 document.title = "Votre panier";
 
@@ -36,7 +35,6 @@ async function showInCart() {
 window.onload = function() {
     cartPriceHTML = document.querySelector("div.cart__price")
     allQuantityInputs = document.querySelectorAll("input[name='itemQuantity']");
-    console.log(allQuantityInputs)
     allQuantityInputs.forEach(element => {
         element.addEventListener("change", modifyItemQuantity, false);
     });
@@ -65,19 +63,16 @@ async function fetchItemToChange() {
 function countTotalItemsInCart() {
     let itemsQuantities = [];
     allCartItems = document.querySelectorAll("article.cart__item");
-    console.log(allCartItems)
     if(allCartItems.length === 0) {
         totalItemsInCart = 0
     } else {
         
         allCartItems.forEach(element => {
             itemQuantity = element.querySelector("input").value
-            console.log(itemQuantity)
             return itemsQuantities.push(parseInt(itemQuantity));
         });   
         totalItemsInCart = itemsQuantities.reduce((partialSum, a) => partialSum + a, 0);
     }
-    console.log(`Total items in cart is ${totalItemsInCart}`)
     showTotalOnPage();
     
     
@@ -88,16 +83,12 @@ function countTotalItemsInCart() {
 function countTotalPriceInCart() {
     let itemsPrices = [];
     allCartItems = document.querySelectorAll("article.cart__item");
-    console.log(allCartItems)
     if(allCartItems.length === 0) {
         totalPriceInCart = 0
     } else {
         allCartItems.forEach(element => {
-            console.log(element)
             let input = element.querySelector("input");
-            console.log(input)
             let itemId = input.closest("article").getAttribute("data-id");
-            console.log(itemId)
             itemObjects = [];
             for (item in localStorage) {
                 if (localStorage.getItem(item)) {
@@ -106,7 +97,6 @@ function countTotalPriceInCart() {
                 }
                 
             }
-            console.log(itemObjects)
 
             let itemsList = []
 
@@ -114,13 +104,10 @@ function countTotalPriceInCart() {
                 itemObjects.forEach(itemObject => {
                     if (itemObject[0].id === itemId) {
                         let itemPrice = 0
-                        console.log(itemObject)
                         itemObject[0].quantity = parseInt(input.value);
-                        console.log(parseInt(input.value))
                         res.forEach(item => {
                             if (itemObject[0].id === item._id) {
                                 itemPrice = item.price
-                                console.log(itemPrice)
                                 itemsPrices.push(Number(itemPrice) * itemObject[0].quantity)
 
                             }
@@ -128,17 +115,7 @@ function countTotalPriceInCart() {
                     }
                 })
 
-                console.log("itemsPrices are")
-                console.log(itemsPrices)
-                console.log("TEST")
-                console.log(itemsPrices[0])
-                itemsPrices.forEach(price => {
-                    console.log("on rentre dans le forEach")
-                    console.log(price)
-                    console.log(typeof(price))
-                })
                 totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
-                console.log(`Total price in cart is ${totalPriceInCart}`)
     
                 showTotalOnPage();
 
@@ -151,7 +128,6 @@ function countTotalPriceInCart() {
 // Récupère la liste des produits depuis l'API
 async function retrieveItems() {
     const response = await fetch('http://localhost:3000/api/products/');
-    console.log(response);
     itemsList = await response.json();
 
     
@@ -162,7 +138,6 @@ async function retrieveItems() {
 // @param e : le bouton "supprimer" 
 function deleteItemInCart(e) {
     let deleteButton = e.target;
-    console.log(deleteButton);
     let itemArticle = deleteButton.closest("article");
     let itemColor = itemArticle.getAttribute("data-color");
     let itemId = itemArticle.getAttribute("data-id");
@@ -174,28 +149,20 @@ function deleteItemInCart(e) {
                 itemObject = JSON.parse(itemObjectJSON);
             }
             if (itemObject[0].id === itemId && itemObject[0].color === itemColor) {
-                console.log(itemId);
-                console.log(itemObject);
-                console.log(itemObject[0].id);
                 localStorage.removeItem(item)
                 itemArticle.remove()
                 
                 
             }
-            console.log("fin de la boucle for de la fonction deleteItemInCart")
         };   
         alert("Le produit a bien été supprimé de votre panier")
     } else {
         alert("Le produit n'a pas été supprimé de votre panier")
     }
     
-    console.log('On lance les fonctions des totaux')
     countTotalItemsInCart();
     countTotalPriceInCart();
     showTotalOnPage()
-    console.log(totalItemsInCart)
-    console.log(totalPriceInCart)
-    console.log(localStorage);
     
     
 }
@@ -214,7 +181,6 @@ function modifyItemQuantity() {
 
 // Affiche les totaux sur la page panier
 function showTotalOnPage() {
-    console.log(cartPriceHTML)
     if(totalItemsInCart < 2) {
         cartPriceHTML.innerHTML = `<p>Total (<span id='totalQuantity'>${totalItemsInCart}</span> article) : <span id='totalPrice'>${totalPriceInCart}</span> €</p>`
     } else {
@@ -226,9 +192,7 @@ function showTotalOnPage() {
 // Vérifie en temps réel si les informations saisies par l'utilisateur dans le formulaire sont erronnées
 // Permet de s'assurer que les informations envoyées au serveur correspondent aux informations attendues
 function validateForm(input) {
-    console.log(formIsValid)
     let inputInFocus = input.target || input
-    console.log(inputInFocus)
     let inputValue = inputInFocus.value
     let nameRGEX = /[^A-zÀ-ú-]/
     let addressRGEX = /[^A-zÀ-ú0-9- ]/
@@ -240,16 +204,11 @@ function validateForm(input) {
     let emailAlert = document.getElementById("emailAlert")
     
     if(inputInFocus.value == "") {
-        console.log("On vérifie si les inputs sont vides")
         formIsValid = false
     }
-    console.log(inputValue)
     
     if(nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
-        console.log("first name is false")
         formIsValid = false
-        console.log("is first name valid?")
-        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!firstNameAlert) {
             let alertMessage = document.createElement("p.firstNameAlert")
@@ -261,7 +220,6 @@ function validateForm(input) {
         }
         
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
-        console.log("first name is true")
         inputInFocus.style.backgroundColor = "white"
         if(firstNameAlert) {
             firstNameAlert.remove()
@@ -269,10 +227,7 @@ function validateForm(input) {
         }
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
-        console.log("last name is false")
         formIsValid = false
-        console.log("is last name valid?")
-        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!lastNameAlert) {
             let alertMessage = document.createElement("p.lastNameAlert")
@@ -283,7 +238,6 @@ function validateForm(input) {
             
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
-        console.log("last name is true")
         inputInFocus.style.backgroundColor = "white"
         if(lastNameAlert) {
             lastNameAlert.remove()
@@ -291,10 +245,7 @@ function validateForm(input) {
         }
     }
     if(addressRGEX.test(inputValue) && inputInFocus.name == "address") {
-        console.log("address is false")
         formIsValid = false
-        console.log("is address valid?")
-        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!addressAlert) {
             let alertMessage = document.createElement("p.addressAlert")
@@ -305,7 +256,6 @@ function validateForm(input) {
             
         }
     } else if (!addressRGEX.test(inputValue) && inputInFocus.name == "address") {
-        console.log("address is true")
         inputInFocus.style.backgroundColor = "white"
         if(addressAlert) {
             addressAlert.remove()
@@ -313,10 +263,7 @@ function validateForm(input) {
         }
     }
     if(nameRGEX.test(inputValue) && inputInFocus.name == "city") {
-        console.log("city is false")
         formIsValid = false
-        console.log("is city valid?")
-        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!cityAlert) {
             let alertMessage = document.createElement("p.cityAlert")
@@ -327,7 +274,6 @@ function validateForm(input) {
             
         }
     } else if (!nameRGEX.test(inputValue) && inputInFocus.name == "city") {
-        console.log("city is true")
         inputInFocus.style.backgroundColor = "white"
         if(cityAlert) {
             cityAlert.remove()
@@ -335,10 +281,7 @@ function validateForm(input) {
         }
     }
     if(!emailRGEX.test(inputValue) && inputInFocus.name == "email") {
-        console.log("email is false")
         formIsValid = false
-        console.log("is email valid?")
-        console.log(formIsValid)
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!emailAlert) {
             let alertMessage = document.createElement("p.emailAlert")
@@ -349,7 +292,6 @@ function validateForm(input) {
             
         }
     } else if (emailRGEX.test(inputValue) && inputInFocus.name == "email") {
-        console.log("email is true")
         inputInFocus.style.backgroundColor = "white"
         if(emailAlert) {
             emailAlert.remove()
@@ -357,7 +299,6 @@ function validateForm(input) {
         }
     }
     
-    console.log(formIsValid)
     
     
     
@@ -385,11 +326,6 @@ async function fetchOrder() {
     
     
     
-    console.log(firstName)
-    console.log(lastName)
-    console.log(address)
-    console.log(city)
-    console.log(email)
     
     let data = {
         contact: {
@@ -402,7 +338,6 @@ async function fetchOrder() {
         products: allProductsList
     }
     
-    console.log(data)
     
     let options = {
         method: "POST",
@@ -413,8 +348,6 @@ async function fetchOrder() {
         
     }
     const response = await fetch(`http://localhost:3000/api/products/order`, options);
-    console.log(allProductsList)
-    console.log(response)
     
     return await response.json();
 }
@@ -424,22 +357,17 @@ async function fetchOrder() {
 // Sinon, prévient l'utilisateur que le formulaire doit être corrigé
 async function sendForm(e) {
     e.preventDefault()
-    console.log("Youpi vous avez appuyé sur le bouton !")
     createProductsList()
-    console.log(allProductsList)
     formIsValid = true
     formInputs.forEach(element => {
         validateForm(element)
     });    
-    console.log(formIsValid)
     if(formIsValid == true) {
         if(confirm("Voulez-vous vraiment procéder à la commande ?") == true) {
             await fetchOrder().then(res => {
-                console.log(res)
                 return res
             }).then(res => {
                 orderId = res.orderId
-                console.log(orderId)
                 alert("Votre commande a été validée")
                 window.location.assign(`./confirmation.html?orderId=${orderId}`)
                 

@@ -1,9 +1,7 @@
 let itemHtml = document.querySelector("section.item");
-console.log(itemHtml);
 
 let url = new URL(window.location.href)
 let id = url.searchParams.get("id");
-console.log(id);
 
 
 
@@ -16,9 +14,7 @@ retrieveItems().catch(function(err) {
 // Récupère le produit à afficher depuis l'API
 async function retrieveItems() {
     const response = await fetch(`http://localhost:3000/api/products/${id}`);
-    console.log(response);
     const item = await response.json();
-    console.log(item);
 
   
 
@@ -28,7 +24,6 @@ async function retrieveItems() {
     document.title = item.name;
 
     item.colors.forEach(function(color) {
-        console.log(color)
         let colorsList = document.getElementById("colors");
         colorsList.insertAdjacentHTML("beforeend", `<option value="${color}">${color}</option>`);
     })
@@ -40,7 +35,6 @@ async function retrieveItems() {
     function addToCart() {
         console.log("vous venez d'appuyer sur le bouton");
         let colorsList = document.getElementById("colors");
-        console.log(colorsList.value)
 
         let quantity = document.getElementById('quantity');
         let productName = `${item.name} `+`${colorsList.value}`;
@@ -61,12 +55,8 @@ async function retrieveItems() {
         if(localStorage.getItem(productName)) {
             if(confirm("Voulez-vous ajouter ce produit au panier ?") == true) {
                 let currentProduct = JSON.parse(localStorage.getItem(productName));
-                console.log(currentProduct);
                 let currentProductQuantity = currentProduct[0].quantity;
-                console.log("current product quantity is " + currentProductQuantity);
-                console.log("the new product quantity is " + newProductQuantity);
                 let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
-                console.log("the final product quantity is " + finalProductQuantity);
                 newItemJSON = {
                     name: item.name,
                     id: item._id,
@@ -79,7 +69,6 @@ async function retrieveItems() {
                 productsList.push(newItemJSON);
                 newItemString = JSON.stringify(productsList);
                 localStorage.setItem(productName, newItemString);
-                console.log(localStorage);
                 alert("Le produit a bien été ajouté au panier")
             } else {
                 alert("Le produit n'a pas été ajouté au panier")
@@ -94,7 +83,6 @@ async function retrieveItems() {
                 productsList.push(newItemJSON);
                 newItemString = JSON.stringify(productsList);
                 localStorage.setItem(productName, newItemString);
-                console.log(localStorage);
                 alert("Le produit a bien été ajouté au panier")
             } else {
                 alert("Le produit n'a pas été ajouté au panier")

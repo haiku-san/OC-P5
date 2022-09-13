@@ -11,9 +11,7 @@ retrieveItems().catch(function(err) {
 // Récupère les produits depuis l'API
 async function retrieveItems() {
     const response = await fetch('http://localhost:3000/api/products/');
-    console.log(response);
     const itemsList = await response.json();
-    console.log(itemsList);
 
     // On crée la liste de produits en utilisant forEach
     itemsList.forEach(function(product) {
