@@ -170,12 +170,9 @@ function deleteItemInCart(e) {
 // Permet la modification de la quantité d'un article directement depuis la page panier
 function modifyItemQuantity() {
     allQuantityInputs.forEach(element => {
-        let itemQuantityValue = element.value;
         countTotalItemsInCart();
         countTotalPriceInCart();
-        itemToChange = element.closest("article.cart__item");
-        itemToChangeId = itemToChange.getAttribute("data-id");
-        item = fetchItemToChange();
+
     });   
 } 
 

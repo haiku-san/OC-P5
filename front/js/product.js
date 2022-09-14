@@ -33,9 +33,7 @@ async function retrieveItems() {
 
     // Ajoute le produit dans le localStorage
     function addToCart() {
-        console.log("vous venez d'appuyer sur le bouton");
         let colorsList = document.getElementById("colors");
-
         let quantity = document.getElementById('quantity');
         let productName = `${item.name} `+`${colorsList.value}`;
         let productsList = [];
