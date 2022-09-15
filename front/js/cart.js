@@ -9,6 +9,21 @@ let formIsValid = true
 
 document.title = "Votre panier";
 
+window.onload = function() {
+    cartPriceHTML = document.querySelector("div.cart__price");
+    allQuantityDeleteButtons = document.querySelectorAll("p.deleteItem");
+    allQuantityDeleteButtons.forEach(element => {
+        element.addEventListener("click", deleteItemInCart, false);
+    });
+    countTotalItemsInCart();
+    countTotalPriceInCart();
+    formInputs = document.querySelectorAll("form input")
+    formInputs.forEach(element => {
+        element.addEventListener("input", validateForm, false);
+    });
+    submitFormButton = document.getElementById("order")
+    submitFormButton.addEventListener("click", e => {sendForm(e)}, false)
+}
 
 showInCart().catch(function(err) {
     console.log(err)
@@ -33,29 +48,17 @@ async function showInCart() {
             cartItemsList.appendChild(newItemCard);
             
             
+            
         }
     }
-}
 
-window.onload = function() {
-    cartPriceHTML = document.querySelector("div.cart__price")
-    allQuantityInputs = document.querySelectorAll("input[name='itemQuantity']");
+    allQuantityInputs = document.querySelectorAll("input.itemQuantity");
     allQuantityInputs.forEach(element => {
         element.addEventListener("change", modifyItemQuantity, false);
     });
-    allQuantityDeleteButtons = document.querySelectorAll("p.deleteItem");
-    allQuantityDeleteButtons.forEach(element => {
-        element.addEventListener("click", deleteItemInCart, false);
-    });
-    countTotalItemsInCart();
-    countTotalPriceInCart();
-    formInputs = document.querySelectorAll("form input")
-    formInputs.forEach(element => {
-        element.addEventListener("input", validateForm, false);
-    });
-    submitFormButton = document.getElementById("order")
-    submitFormButton.addEventListener("click", e => {sendForm(e)}, false)
 }
+
+
 
 
 async function fetchASingleItem() {
@@ -120,7 +123,6 @@ async function countTotalPriceInCart() {
                 }
             })
             totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
-            console.log(totalPriceInCart)
             showTotalOnPage();
 
 
@@ -197,11 +199,11 @@ function deleteItemInCart(e) {
 
 // Permet la modification de la quantité d'un article directement depuis la page panier
 function modifyItemQuantity() {
-    allQuantityInputs.forEach(element => {
-        countTotalItemsInCart();
-        countTotalPriceInCart();
+    // allQuantityInputs.forEach(element => {
+    countTotalItemsInCart();
+    countTotalPriceInCart();
 
-    });   
+    // });   
 } 
 
 // Affiche les totaux sur la page panier
