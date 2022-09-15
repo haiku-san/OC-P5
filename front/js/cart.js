@@ -126,30 +126,6 @@ async function countTotalPriceInCart() {
             showTotalOnPage();
 
 
-            // retrieveItems().then(res => {
-            //     itemObjects.forEach(itemObject => {
-            //         if (itemObject[0].id === itemId) {
-            //             let itemPrice = 0
-            //             itemObject[0].quantity = parseInt(input.value);
-            //             itemToFetch = itemObject[0].id
-                   
-
-            //             res.forEach(item => {
-            //                 if (itemObject[0].id === item._id) {
-            //                     itemPrice = item.price
-            //                     itemsPrices.push(Number(itemPrice) * itemObject[0].quantity)
-
-            //                 }
-            //             })
-            //         }
-            //     })
-
-            //     totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
-            //     console.log(totalPriceInCart)
-    
-            //     showTotalOnPage();
-
-            // })
             
         });   
     }
