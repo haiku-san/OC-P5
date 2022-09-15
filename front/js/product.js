@@ -16,12 +16,29 @@ async function retrieveItems() {
     const response = await fetch(`http://localhost:3000/api/products/${id}`);
     const item = await response.json();
 
-  
 
-    let productPage = document.createElement("article");
-    productPage.innerHTML = `<div class="item__img"><img src=${item.imageUrl} alt=${item.altTxt}></div><div class="item__content"><div class="item__content__titlePrice"><h1 id="title">${item.name}</h1><p>Prix : <span id="price">${item.price}</span>€</p></div><div class="item__content__description"><p class="item__content__description__title">Description :</p><p id="description">${item.description}</p></div><div class="item__content__settings"><div class="item__content__settings__color"><label for="color-select">Choisir une couleur :</label><select name="color-select" id="colors"><option value="">--SVP, choisissez une couleur --</option></option></select></div><div class="item__content__settings__quantity"><label for="itemQuantity">Nombre d'article(s) (1-100) :</label><input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity"></div></div><div class="item__content__addButton"><button id="addToCart">Ajouter au panier</button></div></div>`;
-    itemHtml.appendChild(productPage);
+    let imgHtml = document.querySelector("div.item__img img")
+    imgHtml.setAttribute("src", item.imageUrl)
+    imgHtml.setAttribute("alt", item.altTxt)
+
+    let titleHtml = document.getElementById("title")
+    titleHtml.innerHTML = item.name
+
+    let priceHtml = document.getElementById("price")
+    priceHtml.innerHTML = item.price
+
+    let descriptionHtml = document.getElementById("description")
+    descriptionHtml.innerHTML = item.description
+
     document.title = item.name;
+
+    let initialColorsHtml = document.querySelectorAll("option")
+    initialColorsHtml.forEach(color => {
+        if(color.value == "vert" || color.value == "blanc") {
+            color.remove()
+
+        }
+    })
 
     item.colors.forEach(function(color) {
         let colorsList = document.getElementById("colors");
@@ -44,7 +61,6 @@ async function retrieveItems() {
             quantity: quantity.value,
             imageUrl: item.imageUrl,
             altTxt: item.altTxt,
-            price: item.price
         };
 
         let newProductQuantity = newItemJSON.quantity;
@@ -62,7 +78,6 @@ async function retrieveItems() {
                     quantity: finalProductQuantity,
                     imageUrl: item.imageUrl,
                     altTxt: item.altTxt,
-                    price: item.price
                 };
                 productsList.push(newItemJSON);
                 newItemString = JSON.stringify(productsList);
@@ -74,7 +89,7 @@ async function retrieveItems() {
 
         } else if(colorsList.value === "") {
             window.alert("Veuillez sélectionner une couleur")
-        } else if(parseInt(quantity.value) === 0) {
+        } else if(parseInt(quantity.value) == 0 || parseInt(quantity.value) > 100) {
             window.alert("Veuillez sélectionner une quantité valable")
         } else {
             if(confirm("Voulez-vous ajouter ce produit au panier ?") == true) {

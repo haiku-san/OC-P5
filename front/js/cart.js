@@ -19,7 +19,12 @@ showInCart().catch(function(err) {
 async function showInCart() {
     for(item in localStorage) {
         productInCart = JSON.parse(localStorage.getItem(item));
+        
+
         if(productInCart) {
+            itemToFetch = productInCart[0].id
+            let productInServer = await fetchASingleItem()
+            productInCart[0].price = productInServer.price
             let newItemCard = document.createElement("article");
             newItemCard.setAttribute("class", "cart__item");
             newItemCard.setAttribute("data-id", `${productInCart[0].id}`);
@@ -53,8 +58,8 @@ window.onload = function() {
 }
 
 
-async function fetchItemToChange() {
-    const response = await fetch(`http://localhost:3000/api/products/${itemToChangeId}`);
+async function fetchASingleItem() {
+    const response = await fetch(`http://localhost:3000/api/products/${itemToFetch}`);
     return item = await response.json();
 }
 
@@ -80,12 +85,14 @@ function countTotalItemsInCart() {
 }
 
 // Compte le prix total du panier
-function countTotalPriceInCart() {
+async function countTotalPriceInCart() {
+
     let itemsPrices = [];
     allCartItems = document.querySelectorAll("article.cart__item");
     if(allCartItems.length === 0) {
         totalPriceInCart = 0
     } else {
+        let res = await retrieveItems()
         allCartItems.forEach(element => {
             let input = element.querySelector("input");
             let itemId = input.closest("article").getAttribute("data-id");
@@ -97,29 +104,50 @@ function countTotalPriceInCart() {
                 }
                 
             }
-
-            let itemsList = []
-
-            retrieveItems().then(res => {
-                itemObjects.forEach(itemObject => {
-                    if (itemObject[0].id === itemId) {
-                        let itemPrice = 0
-                        itemObject[0].quantity = parseInt(input.value);
-                        res.forEach(item => {
-                            if (itemObject[0].id === item._id) {
-                                itemPrice = item.price
-                                itemsPrices.push(Number(itemPrice) * itemObject[0].quantity)
-
-                            }
-                        })
-                    }
-                })
-
-                totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
-    
-                showTotalOnPage();
-
+            
+            itemObjects.forEach(itemObject => {
+                if (itemObject[0].id === itemId) {
+                    let itemPrice = 0
+                    itemObject[0].quantity = parseInt(input.value);
+                    itemToFetch = itemObject[0].id
+               
+                 res.forEach(item => {
+                        if (itemObject[0].id === item._id) {
+                            itemPrice = item.price
+                            itemsPrices.push(Number(itemPrice) * itemObject[0].quantity)
+                     }
+                    })
+                }
             })
+            totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
+            console.log(totalPriceInCart)
+            showTotalOnPage();
+
+
+            // retrieveItems().then(res => {
+            //     itemObjects.forEach(itemObject => {
+            //         if (itemObject[0].id === itemId) {
+            //             let itemPrice = 0
+            //             itemObject[0].quantity = parseInt(input.value);
+            //             itemToFetch = itemObject[0].id
+                   
+
+            //             res.forEach(item => {
+            //                 if (itemObject[0].id === item._id) {
+            //                     itemPrice = item.price
+            //                     itemsPrices.push(Number(itemPrice) * itemObject[0].quantity)
+
+            //                 }
+            //             })
+            //         }
+            //     })
+
+            //     totalPriceInCart = itemsPrices.reduce((partialSum, a) => partialSum + a, 0);
+            //     console.log(totalPriceInCart)
+    
+            //     showTotalOnPage();
+
+            // })
             
         });   
     }
@@ -204,7 +232,7 @@ function validateForm(input) {
         formIsValid = false
     }
     
-    if(nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
+    if(inputInFocus.value !== "" && nameRGEX.test(inputValue) && inputInFocus.name == "firstName") {
         formIsValid = false
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!firstNameAlert) {
@@ -223,7 +251,7 @@ function validateForm(input) {
             
         }
     }
-    if(nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
+    if(inputInFocus.value !== "" && nameRGEX.test(inputValue) && inputInFocus.name == "lastName") {
         formIsValid = false
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!lastNameAlert) {
@@ -241,7 +269,7 @@ function validateForm(input) {
             
         }
     }
-    if(addressRGEX.test(inputValue) && inputInFocus.name == "address") {
+    if(inputInFocus.value !== "" && addressRGEX.test(inputValue) && inputInFocus.name == "address") {
         formIsValid = false
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!addressAlert) {
@@ -259,7 +287,7 @@ function validateForm(input) {
             
         }
     }
-    if(nameRGEX.test(inputValue) && inputInFocus.name == "city") {
+    if(inputInFocus.value !== "" && nameRGEX.test(inputValue) && inputInFocus.name == "city") {
         formIsValid = false
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!cityAlert) {
@@ -277,7 +305,7 @@ function validateForm(input) {
             
         }
     }
-    if(!emailRGEX.test(inputValue) && inputInFocus.name == "email") {
+    if(inputInFocus.value !== "" && !emailRGEX.test(inputValue) && inputInFocus.name == "email") {
         formIsValid = false
         inputInFocus.style.backgroundColor = "#FF8CA3"
         if(!emailAlert) {
@@ -360,21 +388,15 @@ async function sendForm(e) {
         validateForm(element)
     });    
     if(formIsValid == true) {
+
         if(confirm("Voulez-vous vraiment procéder à la commande ?") == true) {
-            await fetchOrder().then(res => {
-                return res
-            }).then(res => {
-                orderId = res.orderId
-                alert("Votre commande a été validée")
-                window.location.assign(`./confirmation.html?orderId=${orderId}`)
-                
-            }).catch(err => {
-                console.log(err)
-            })
+            let res = await fetchOrder()
+            orderId = res.orderId
+            alert("Votre commande a été validée")
+            window.location.assign(`./confirmation.html?orderId=${orderId}`)
         } else {
             alert("La commande n'a pas été passée")
-        }
-        
+        }        
         
     } else {
         alert("Veuillez corriger le formulaire svp")
