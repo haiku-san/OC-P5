@@ -1,3 +1,4 @@
+// On déclare des variables que l'on va utiliser dans tout le fichier
 let cartItemsList = document.getElementById("cart__items");
 let totalItemsInCart = 0;
 let totalPriceInCart = 0;
@@ -6,7 +7,7 @@ let cartPriceHTML = ""
 // On crée un boolean pour vérifier si le formulaire est correctement rempli ou non
 let formIsValid = true
 
-
+// On change le titre de la page html à travers le DOM
 document.title = "Votre panier";
 
 window.onload = function() {
