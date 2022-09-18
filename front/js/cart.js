@@ -10,21 +10,7 @@ let formIsValid = true
 // On change le titre de la page html à travers le DOM
 document.title = "Votre panier";
 
-window.onload = function() {
-    cartPriceHTML = document.querySelector("div.cart__price");
-    allQuantityDeleteButtons = document.querySelectorAll("p.deleteItem");
-    allQuantityDeleteButtons.forEach(element => {
-        element.addEventListener("click", deleteItemInCart, false);
-    });
-    countTotalItemsInCart();
-    countTotalPriceInCart();
-    formInputs = document.querySelectorAll("form input")
-    formInputs.forEach(element => {
-        element.addEventListener("input", validateForm, false);
-    });
-    submitFormButton = document.getElementById("order")
-    submitFormButton.addEventListener("click", e => {sendForm(e)}, false)
-}
+
 
 showInCart().catch(function(err) {
     console.log(err)
@@ -52,7 +38,13 @@ async function showInCart() {
             
         }
     }
-
+    allQuantityDeleteButtons = document.querySelectorAll("p.deleteItem");
+    console.log(allQuantityDeleteButtons)
+    allQuantityDeleteButtons.forEach(element => {
+        element.addEventListener("click", deleteItemInCart, false);
+        console.log(element)
+    });
+    
     allQuantityInputs = document.querySelectorAll("input.itemQuantity");
     allQuantityInputs.forEach(element => {
         element.addEventListener("change", modifyItemQuantity, false);
@@ -144,6 +136,7 @@ async function retrieveItems() {
 // Permet la suppression d'un article du panier lorsque l'on clique sur le bouton "supprimer"
 // @param e : le bouton "supprimer" 
 function deleteItemInCart(e) {
+    console.log("lancement de deleteItemInCart")
     let deleteButton = e.target;
     let itemArticle = deleteButton.closest("article");
     let itemColor = itemArticle.getAttribute("data-color");
@@ -383,4 +376,17 @@ async function sendForm(e) {
     
     
     
+}
+
+window.onload = function() {
+    cartPriceHTML = document.querySelector("div.cart__price");
+    
+    countTotalItemsInCart();
+    countTotalPriceInCart();
+    formInputs = document.querySelectorAll("form input")
+    formInputs.forEach(element => {
+        element.addEventListener("input", validateForm, false);
+    });
+    submitFormButton = document.getElementById("order")
+    submitFormButton.addEventListener("click", e => {sendForm(e)}, false)
 }

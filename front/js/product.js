@@ -53,7 +53,7 @@ async function retrieveItems() {
         let colorsList = document.getElementById("colors");
         let quantity = document.getElementById('quantity');
         let productName = `${item.name} `+`${colorsList.value}`;
-        let productsList = [];
+        let productsList = {};
         let newItemJSON = {
             name: item.name,
             id: item._id,
@@ -64,12 +64,11 @@ async function retrieveItems() {
         };
 
         let newProductQuantity = newItemJSON.quantity;
-
-
-        if(localStorage.getItem(productName)) {
+        if(localStorage.getItem("cart") && JSON.parse(localStorage.getItem("cart"))[productName]) {
             if(confirm("Voulez-vous ajouter ce produit au panier ?") == true) {
-                let currentProduct = JSON.parse(localStorage.getItem(productName));
-                let currentProductQuantity = currentProduct[0].quantity;
+                let currentProduct = JSON.parse(localStorage.getItem("cart"));
+                let currentProductQuantity = currentProduct[productName].quantity;
+                console.log(currentProductQuantity)
                 let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
                 newItemJSON = {
                     name: item.name,
@@ -79,9 +78,10 @@ async function retrieveItems() {
                     imageUrl: item.imageUrl,
                     altTxt: item.altTxt,
                 };
-                productsList.push(newItemJSON);
-                newItemString = JSON.stringify(productsList);
-                localStorage.setItem(productName, newItemString);
+                currentItemsInCart = JSON.parse(localStorage.getItem("cart"))
+                currentItemsInCart[productName] = newItemJSON
+                newItemString = JSON.stringify(currentItemsInCart);
+                localStorage.setItem("cart", newItemString);
                 alert("Le produit a bien été ajouté au panier")
             } else {
                 alert("Le produit n'a pas été ajouté au panier")
@@ -93,9 +93,19 @@ async function retrieveItems() {
             window.alert("Veuillez sélectionner une quantité valable")
         } else {
             if(confirm("Voulez-vous ajouter ce produit au panier ?") == true) {
-                productsList.push(newItemJSON);
-                newItemString = JSON.stringify(productsList);
-                localStorage.setItem(productName, newItemString);
+                let currentItemsInCart
+
+                if(!localStorage.getItem("cart")) {
+                    productsList[productName] = newItemJSON;
+                    newItemString = JSON.stringify(productsList);
+                } else {
+                    currentItemsInCart = JSON.parse(localStorage.getItem("cart"))
+                    currentItemsInCart[productName] = newItemJSON
+                    newItemString = JSON.stringify(currentItemsInCart);
+                }
+                
+               
+                localStorage.setItem("cart", newItemString);
                 alert("Le produit a bien été ajouté au panier")
             } else {
                 alert("Le produit n'a pas été ajouté au panier")
