@@ -33,7 +33,25 @@ async function showInCart() {
             newItemCard.setAttribute("class", "cart__item");
             newItemCard.setAttribute("data-id", `${productInCart.id}`);
             newItemCard.setAttribute("data-color", `${productInCart.color}`);
-            newItemCard.innerHTML = `<div class="cart__item__img"> <img src="${productInCart.imageUrl}" alt="${productInCart.altTxt}"> </div> <div class="cart__item__content"> <div class="cart__item__content__description"> <h2>${productInCart.name}</h2> <p>${productInCart.color}</p> <p>${productInCart.price.toFixed(2)} €</p> </div> <div class="cart__item__content__settings"> <div class="cart__item__content__settings__quantity"> <p>Qté : </p> <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${productInCart.quantity}" > </div> <div class="cart__item__content__settings__delete"> <p class="deleteItem">Supprimer</p> </div> </div> </div>`;
+            newItemCard.innerHTML = 
+            `<div class="cart__item__img"> 
+                <img src="${productInCart.imageUrl}" alt="${productInCart.altTxt}"> 
+            </div> 
+            <div class="cart__item__content"> 
+                <div class="cart__item__content__description"> 
+                    <h2>${productInCart.name}</h2> 
+                    <p>${productInCart.color}</p> 
+                    <p>${productInCart.price.toFixed(2)} €</p> 
+                </div> 
+                <div class="cart__item__content__settings"> 
+                    <div class="cart__item__content__settings__quantity"> 
+                        <p>Qté : </p> <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${productInCart.quantity}" > 
+                    </div> 
+                    <div class="cart__item__content__settings__delete"> 
+                        <p class="deleteItem">Supprimer</p> 
+                    </div> 
+                </div> 
+            </div>`;
             cartItemsList.appendChild(newItemCard);
             
             
