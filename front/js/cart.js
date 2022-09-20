@@ -22,13 +22,8 @@ showInCart().catch(function(err) {
 // On affiche les produits sur la page panier
 async function showInCart() {
 
-    console.log(allItemsInCart)
-    console.log(allItemsInCartParsed)
-    
     for(item in allItemsInCartParsed) {
-        productInCart = allItemsInCartParsed[item];
-        console.log(productInCart)
-        
+        productInCart = allItemsInCartParsed[item];        
 
         if(productInCart) {
             itemToFetch = productInCart.id
@@ -46,10 +41,8 @@ async function showInCart() {
         }
     }
     allQuantityDeleteButtons = document.querySelectorAll("p.deleteItem");
-    console.log(allQuantityDeleteButtons)
     allQuantityDeleteButtons.forEach(element => {
         element.addEventListener("click", deleteItemInCart, false);
-        console.log(element)
     });
     
     allQuantityInputs = document.querySelectorAll("input.itemQuantity");
@@ -143,7 +136,6 @@ async function retrieveItems() {
 // Permet la suppression d'un article du panier lorsque l'on clique sur le bouton "supprimer"
 // @param e : le bouton "supprimer" 
 function deleteItemInCart(e) {
-    console.log("lancement de deleteItemInCart")
     let deleteButton = e.target;
     let itemArticle = deleteButton.closest("article");
     let itemColor = itemArticle.getAttribute("data-color");
