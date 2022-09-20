@@ -3,6 +3,8 @@ let cartItemsList = document.getElementById("cart__items");
 let totalItemsInCart = 0;
 let totalPriceInCart = 0;
 let cartPriceHTML = ""
+let allItemsInCart = localStorage.getItem("cart")
+let allItemsInCartParsed = JSON.parse(allItemsInCart)
 
 // On crée un boolean pour vérifier si le formulaire est correctement rempli ou non
 let formIsValid = true
@@ -19,19 +21,24 @@ showInCart().catch(function(err) {
 
 // On affiche les produits sur la page panier
 async function showInCart() {
-    for(item in localStorage) {
-        productInCart = JSON.parse(localStorage.getItem(item));
+
+    console.log(allItemsInCart)
+    console.log(allItemsInCartParsed)
+    
+    for(item in allItemsInCartParsed) {
+        productInCart = allItemsInCartParsed[item];
+        console.log(productInCart)
         
 
         if(productInCart) {
-            itemToFetch = productInCart[0].id
+            itemToFetch = productInCart.id
             let productInServer = await fetchASingleItem()
-            productInCart[0].price = productInServer.price
+            productInCart.price = productInServer.price
             let newItemCard = document.createElement("article");
             newItemCard.setAttribute("class", "cart__item");
-            newItemCard.setAttribute("data-id", `${productInCart[0].id}`);
-            newItemCard.setAttribute("data-color", `${productInCart[0].color}`);
-            newItemCard.innerHTML = `<div class="cart__item__img"> <img src="${productInCart[0].imageUrl}" alt="${productInCart[0].altTxt}"> </div> <div class="cart__item__content"> <div class="cart__item__content__description"> <h2>${productInCart[0].name}</h2> <p>${productInCart[0].color}</p> <p>${productInCart[0].price.toFixed(2)} €</p> </div> <div class="cart__item__content__settings"> <div class="cart__item__content__settings__quantity"> <p>Qté : </p> <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${productInCart[0].quantity}" > </div> <div class="cart__item__content__settings__delete"> <p class="deleteItem">Supprimer</p> </div> </div> </div>`;
+            newItemCard.setAttribute("data-id", `${productInCart.id}`);
+            newItemCard.setAttribute("data-color", `${productInCart.color}`);
+            newItemCard.innerHTML = `<div class="cart__item__img"> <img src="${productInCart.imageUrl}" alt="${productInCart.altTxt}"> </div> <div class="cart__item__content"> <div class="cart__item__content__description"> <h2>${productInCart.name}</h2> <p>${productInCart.color}</p> <p>${productInCart.price.toFixed(2)} €</p> </div> <div class="cart__item__content__settings"> <div class="cart__item__content__settings__quantity"> <p>Qté : </p> <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${productInCart.quantity}" > </div> <div class="cart__item__content__settings__delete"> <p class="deleteItem">Supprimer</p> </div> </div> </div>`;
             cartItemsList.appendChild(newItemCard);
             
             
@@ -93,24 +100,24 @@ async function countTotalPriceInCart() {
             let input = element.querySelector("input");
             let itemId = input.closest("article").getAttribute("data-id");
             itemObjects = [];
-            for (item in localStorage) {
-                if (localStorage.getItem(item)) {
-                    let itemObjectJSON = localStorage.getItem(item);
-                    itemObjects.push(JSON.parse(itemObjectJSON))
+            for (item in allItemsInCartParsed) {
+                if (allItemsInCartParsed[item]) {
+                    let itemObjectJSON = allItemsInCartParsed[item];
+                    itemObjects.push(itemObjectJSON)
                 }
                 
             }
             
             itemObjects.forEach(itemObject => {
-                if (itemObject[0].id === itemId) {
+                if (itemObject.id === itemId) {
                     let itemPrice = 0
-                    itemObject[0].quantity = parseInt(input.value);
-                    itemToFetch = itemObject[0].id
+                    itemObject.quantity = parseInt(input.value);
+                    itemToFetch = itemObject.id
                
                  res.forEach(item => {
-                        if (itemObject[0].id === item._id) {
+                        if (itemObject.id === item._id) {
                             itemPrice = item.price
-                            itemsPrices.push(Number(itemPrice) * itemObject[0].quantity)
+                            itemsPrices.push(Number(itemPrice) * itemObject.quantity)
                      }
                     })
                 }
@@ -143,13 +150,15 @@ function deleteItemInCart(e) {
     let itemId = itemArticle.getAttribute("data-id");
     itemObject = {};
     if(confirm("Voulez-vous vraiment supprimer cet article de votre panier ?") == true) {
-        for (item in localStorage) {
-            if (localStorage.getItem(item)) {
-                let itemObjectJSON = localStorage.getItem(item);
-                itemObject = JSON.parse(itemObjectJSON);
-            }
-            if (itemObject[0].id === itemId && itemObject[0].color === itemColor) {
-                localStorage.removeItem(item)
+        for (item in allItemsInCartParsed) {
+            let itemObject = allItemsInCartParsed[item];
+            if (itemObject.id === itemId && itemObject.color === itemColor) {
+                let currentCartJSON = localStorage.getItem("cart")
+                currentCart = JSON.parse(currentCartJSON)
+                delete currentCart[item]
+                currentCartJSON = JSON.stringify(currentCart)
+                localStorage.removeItem("cart")
+                localStorage.setItem("cart", currentCartJSON)
                 itemArticle.remove()
                 
                 

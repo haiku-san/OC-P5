@@ -4,4 +4,4 @@ let orderId = url.searchParams.get("orderId");
 const orderIdHtml = document.getElementById("orderId")
 orderIdHtml.innerHTML = orderId
 
-localStorage.clear()
+localStorage.removeItem("cart")
