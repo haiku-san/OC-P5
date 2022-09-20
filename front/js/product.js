@@ -68,7 +68,6 @@ async function retrieveItems() {
             if(confirm("Voulez-vous ajouter ce produit au panier ?") == true) {
                 let currentProduct = JSON.parse(localStorage.getItem("cart"));
                 let currentProductQuantity = currentProduct[productName].quantity;
-                console.log(currentProductQuantity)
                 let finalProductQuantity = parseInt(currentProductQuantity) + parseInt(newProductQuantity);
                 newItemJSON = {
                     name: item.name,
