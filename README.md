@@ -1,15 +1,31 @@
-# Kanap #
+# OC-P5
 
-This is the front end and back end server for Project 5 of the Web Developer path.
+Projet n°5 de la formation développeur frontend d'Openclassrooms : "Construisez un site e-commerce en Javascript".
 
-### Back end Prerequisites ###
 
-You will need to have Node and `npm` installed locally on your machine.
+## Clonage du dépôt
 
-### Back end Installation ###
+Clonez le repo GitHub
+```bash
+  git clone https://github.com/haiku-san/OC-P4/tree/main
+```
 
-Clone this repo. From the "back" folder of the project, run `npm install`. You 
-can then run the server with `node server`. 
-The server should run on `localhost` with default port `3000`. If the
-server runs on another port for any reason, this is printed to the
-console when the server starts, e.g. `Listening on port 3001`.
+## Installation backend
+
+Commencez par installer node et npm sur votre machine, si ce n'est pas déjà fait.
+
+Installez les dépendances
+```bash
+  cd backend
+  npm install
+```
+
+Lancez le serveur backend
+```bash
+  cd backend
+  node server
+```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
