@@ -7,7 +7,7 @@ Projet n°5 de la formation développeur frontend d'Openclassrooms : "Construise
 
 Clonez le repo GitHub
 ```bash
-  git clone https://github.com/haiku-san/OC-P4/tree/main
+  git clone https://github.com/haiku-san/OC-P5/tree/main
 ```
 
 ## Installation backend
